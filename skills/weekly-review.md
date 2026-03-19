@@ -15,10 +15,11 @@ or for broader reviews ("what have I done this quarter", "review for my manager"
 
 ### 1. Gather data
 
+- Run `did this week` to get objective activity data.
+- Run `jira-pending summary` to get current ticket status overview.
+- Run `jira-pending sprint` to see sprint ticket states.
 - Read logs from `memory/logs/` for the current week.
 - Read `board/BOARD.md`.
-- If external tools are configured (activity aggregators, issue tracker CLIs),
-  use them to get objective activity data for the period.
 
 ### 2. Present the weekly summary
 
@@ -70,9 +71,9 @@ or for broader reviews ("what have I done this quarter", "review for my manager"
 
 If the user asks for a monthly or quarterly review:
 
+- Run `did` with the appropriate range (`did last quarter`, `did this month`).
 - Scan review files in `brain/reviews/` for the period.
 - Scan logs in `memory/logs/` for the period.
-- Use external tools with the appropriate date range if available.
 - Group by project or theme.
 - Highlight: major deliverables, cross-team contributions, problems solved, skills developed.
 - Present in a format suitable for sharing with a manager.

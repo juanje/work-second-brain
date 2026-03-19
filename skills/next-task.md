@@ -22,8 +22,8 @@ The first item in Next Actions is the next task. Extract its ticket ID (if any).
 
 ### 3. Get task detail
 
-If the task has a ticket ID from an issue tracker:
-- Use the appropriate CLI tool to get description, status, comments, and links.
+If the task has a Jira ticket ID (e.g. PROJ-1234):
+- Run `jira-detail <TICKET_ID>` to get description, status, comments, and links.
 
 Also check `brain/projects/` for any related project context that might help.
 

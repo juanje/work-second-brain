@@ -81,15 +81,13 @@ Update `last_accessed` and increment `access_count` when you read or modify a fi
 
 ## Getting work data
 
-<!-- CUSTOMIZE: Add your CLI tools, MCPs, or other data sources here.
-     Examples of tools you might integrate:
-     - Git log queries for commit history
-     - Issue tracker CLIs (Jira, Linear, GitHub Issues)
-     - Activity aggregators (e.g. `did` — https://github.com/psss/did)
-     - Calendar/meeting tools
-     Keep it concise: tool name, what it does, basic syntax. -->
+Three CLI tools provide objective data. Always check memory first (Rule 8) before calling these.
 
-Check the board and memory first before querying external tools — the information may already be captured.
+- **`did <range>`** — Past activity from Git, GitLab, Jira, Bugzilla. Ranges: `yesterday`, `last friday`, `this week`, `this month`, `last quarter`. Add `--format=markdown` for markdown output. Use `--<source>` filters (e.g. `--git`, `--jira`, `--gitlab`) for faster, targeted queries. See [did documentation](https://github.com/psss/did) for setup and full reference.
+- **`jira-pending <subcommand>`** — Current Jira state. Subcommands: `assigned`, `sprint`, `new`, `updated`, `blocked`, `summary`. See `scripts/jira-pending.sh` for setup.
+- **`jira-detail <TICKET_ID>`** — Full ticket detail (description, comments, links). Flags: `--comments-only`, `--last N`. See `scripts/jira-detail.sh` for setup.
+
+<!-- To add more tools, keep the format: tool name, what it does, basic syntax. -->
 
 ## Rules
 

@@ -2,6 +2,8 @@
 
 A persistent, file-based memory system for AI coding assistants. The user does brain dumps throughout the day — tasks, decisions, ideas, context, random thoughts — and the AI agent captures, organizes, and maintains everything in Markdown files.
 
+> **Note:** Delete this README after setup. It's reference documentation for the human, not for the agent. Keeping it adds unnecessary tokens to the agent's context and can distract from operational files.
+
 ## Design principles
 
 1. **Files first.** Markdown is the single source of truth. Human-readable, Git-versionable, portable across agents. No databases, no vendor lock-in.
@@ -14,8 +16,9 @@ A persistent, file-based memory system for AI coding assistants. The user does b
 1. Clone or copy this skeleton into a new directory.
 2. Open it as a workspace in your AI-enabled editor (Cursor, VS Code + Copilot, etc.).
 3. Edit `identity/USER.md` with your profile — role, team, tools, work style.
-4. (Optional) Add your CLI tools to the "Getting work data" section in `AGENTS.md`.
+4. Set up the CLI tools (see [Tool setup](#tool-setup) below).
 5. Start talking to the agent. Brain dump away.
+6. **Delete this README** once you're familiar with the system.
 
 The system populates itself through use. The more you talk to it, the more it knows.
 
@@ -24,6 +27,10 @@ The system populates itself through use. The more you talk to it, the more it kn
 ```
 work_brain/
 ├── AGENTS.md                    → Agent working memory. Loaded automatically.
+├── README.md                    → This file. Delete after setup.
+├── scripts/
+│   ├── jira-pending.sh          → Query pending Jira tickets.
+│   └── jira-detail.sh           → Get full ticket details.
 ├── board/
 │   └── BOARD.md                 → Kanban board (Inbox, Next Actions, Doing, Waiting, Done, Parked).
 ├── identity/
@@ -54,6 +61,104 @@ work_brain/
     ├── weekly.md                → /weekly — weekly review.
     ├── maintenance.md           → /maintenance — deep maintenance cycle.
     └── next.md                  → /next — show next task.
+```
+
+## Tool setup
+
+The system includes three CLI tools that provide objective work data to the agent. All are optional but recommended for a fully functional system.
+
+### `did` — activity aggregator
+
+[`did`](https://github.com/psss/did) is a CLI tool that gathers status reports from development tools (Git, GitLab, GitHub, Jira, Bugzilla, etc.).
+
+**Install:**
+
+```bash
+pip install did
+```
+
+**Configure** (`~/.did/config`):
+
+```ini
+[general]
+email = your.email@example.com
+
+[github]
+type = github
+url = https://api.github.com/
+token = <your-github-token>
+login = <your-github-username>
+
+[jira]
+type = jira
+url = https://your-instance.atlassian.net
+token = <your-jira-api-token>
+user = your.email@example.com
+project = YOUR_PROJECT
+```
+
+See the [`did` documentation](https://github.com/psss/did) for all available plugins (GitLab, Bugzilla, Pagure, Gerrit, etc.) and configuration options.
+
+**Test:**
+
+```bash
+did yesterday
+did this week
+did yesterday --jira    # filter by source for faster queries
+```
+
+### `jira-pending` — current Jira state
+
+Queries your pending Jira tickets. Included in `scripts/jira-pending.sh`.
+
+**Setup:**
+
+1. Edit `scripts/jira-pending.sh` and set your Jira URL, email, and project:
+   ```bash
+   JIRA_URL="https://your-instance.atlassian.net"
+   JIRA_USER="your.email@example.com"
+   PROJECT="YOUR_PROJECT"
+   ```
+2. Create a Jira API token at https://id.atlassian.com/manage-profile/security/api-tokens
+3. Save the token:
+   ```bash
+   mkdir -p ~/.did
+   echo "your-api-token" > ~/.did/jira.token
+   chmod 600 ~/.did/jira.token
+   ```
+4. Make executable and link:
+   ```bash
+   chmod +x scripts/jira-pending.sh
+   ln -s "$(pwd)/scripts/jira-pending.sh" ~/.local/bin/jira-pending
+   ```
+
+**Usage:**
+
+```bash
+jira-pending assigned   # all open tickets assigned to me
+jira-pending sprint     # my tickets in the current sprint
+jira-pending summary    # count by status
+```
+
+### `jira-detail` — ticket details
+
+Shows full ticket detail (description, comments, links). Included in `scripts/jira-detail.sh`. Uses the same credentials as `jira-pending`.
+
+**Setup:**
+
+1. Edit `scripts/jira-detail.sh` and set the same Jira URL and email.
+2. Make executable and link:
+   ```bash
+   chmod +x scripts/jira-detail.sh
+   ln -s "$(pwd)/scripts/jira-detail.sh" ~/.local/bin/jira-detail
+   ```
+
+**Usage:**
+
+```bash
+jira-detail PROJ-1234                # full ticket detail
+jira-detail PROJ-1234 --comments-only  # just comments
+jira-detail PROJ-1234 --last 3        # last 3 comments
 ```
 
 ## How it works
@@ -90,18 +195,6 @@ Run `/maintenance` periodically (daily or weekly). It handles:
 
 ## Customization
 
-### Adding your tools
-
-Edit the "Getting work data" section in `AGENTS.md` to add your CLI tools:
-
-```markdown
-## Getting work data
-
-- **`did <range>`** — Past activity from Git, GitLab, Jira. Ranges: `yesterday`, `this week`.
-- **`gh issue list`** — Open GitHub issues assigned to me.
-- **`linear-cli sprint`** — Current sprint status.
-```
-
 ### Adding new skills
 
 Create a new file in `skills/` with this structure:
@@ -135,9 +228,9 @@ This system works with any AI editor that reads `AGENTS.md` from the workspace r
 - **Cursor** — full support (AGENTS.md + .cursor/commands/)
 - **Claude Code** — full support (AGENTS.md + .claude/commands/ + hooks)
 - **GitHub Copilot** — reads AGENTS.md
-- **Windsurf, Aider, Zed, Warp, RooCode** — reads AGENTS.md
+- **Windsurf, Zed, RooCode** — reads AGENTS.md
 
-For Claude Code, copy `.cursor/commands/` to `.claude/commands/` and optionally add SessionEnd hooks.
+For Claude Code, copy `.cursor/commands/` to `.claude/commands/` and optionally configure SessionEnd hooks for automatic conversation processing.
 
 ## 🤖 AI Tools Disclaimer
 
