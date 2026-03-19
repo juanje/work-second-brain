@@ -22,6 +22,8 @@ A persistent, file-based memory system for AI coding assistants. The user does b
 
 The system populates itself through use. The more you talk to it, the more it knows.
 
+> **Note:** Remember, this is an initial and generic setup. Personalize it to your needs, tools, and workflows.
+
 ## Structure
 
 ```
