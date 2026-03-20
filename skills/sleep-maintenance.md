@@ -74,14 +74,16 @@ actually relevant right now.
 **Goal:** Keep the board clean and actionable.
 
 1. Read `board/BOARD.md`.
-2. **Waiting items:** If any have been waiting >7 days, add a note suggesting
+2. **Doing:** If more than **2** open items, flag WIP exceeded (target 1, max 2 if related; AGENTS.md Rule 9).
+3. **Waiting items:** If any have been waiting >7 days, add a note suggesting
    escalation.
-3. **Inbox items:** If there are items older than 3 days, flag for triage.
-4. **Next Actions:** Review if items are still relevant. Flag any older than
-   14 days without progress.
-5. **Done:** If there are items in Done, remind that weekly review should
+4. **Inbox items:** If there are items older than 3 days, flag for triage.
+5. **Sprint Backlog:** Flag stale items if sprint scope has shifted.
+6. **Next Actions:** Review if items are still relevant. Flag any older than
+   14 days without progress. Flag if more than 4 items (WIP limit is 3–4).
+7. **Done:** If there are items in Done, remind that weekly review should
    clear them.
-6. Record any board changes.
+8. Record any board changes.
 
 ---
 

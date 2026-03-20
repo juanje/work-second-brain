@@ -14,7 +14,7 @@ When the user says "next", "what's next", "what should I work on now", or runs t
 
 ### 1. Read the board
 
-Read `board/BOARD.md` and extract the **Next Actions** list.
+Read `board/BOARD.md` and extract the **Next Actions** list (immediate queue; max 3–4 items). Optionally mention **Sprint Backlog** as upcoming work after the Next Actions queue.
 
 ### 2. Identify the top task
 
@@ -50,4 +50,4 @@ Keep it concise but actionable — enough to start working immediately.>
 
 ### 5. Offer to start
 
-Ask if the user wants to move the task to Doing.
+Ask if the user wants to move the task to Doing. If Doing already has 2 items, remind them of WIP (AGENTS.md Rule 9) before adding another.

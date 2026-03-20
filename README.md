@@ -34,7 +34,7 @@ work_brain/
 │   ├── jira-pending.sh          → Query pending Jira tickets.
 │   └── jira-detail.sh           → Get full ticket details.
 ├── board/
-│   └── BOARD.md                 → Kanban board (Inbox, Next Actions, Doing, Waiting, Done, Parked).
+│   └── BOARD.md                 → Kanban (order: Doing, Next, Waiting, Sprint Backlog, Inbox, Parked, Done).
 ├── identity/
 │   ├── USER.md                  → Your work profile and preferences.
 │   └── SOUL.md                  → Agent identity, values, and limits.
@@ -175,11 +175,13 @@ jira-detail PROJ-1234 --last 3        # last 3 comments
 ### During the day
 
 Talk to the agent naturally. It will:
-- Capture tasks → Board Inbox
+- Capture tasks → Board Inbox (triage into Sprint Backlog or Next Actions when ready)
 - Capture decisions → `brain/projects/` or `brain/concepts/`
 - Capture ideas → `brain/ideas/`
 - Capture lessons → `brain/concepts/`
 - Confirm what it captured
+
+**Board model:** **Inbox** is for untriaged capture. **Sprint Backlog** holds work committed for the sprint that is not yet "next." **Next Actions** is a short immediate queue (max 3–4 items). **Doing** targets one task at a time (max two if tightly related). One task or ticket = one board line; link related items with `Related to:` on each. See `board/BOARD.md` and `AGENTS.md`.
 
 ### Commands
 
@@ -195,7 +197,7 @@ Talk to the agent naturally. It will:
 
 ### Board sync
 
-Run `/sync` during the day to keep the board current. It cross-references board items with Jira status, detects resolved or unblocked items, and refreshes the Active context section in AGENTS.md. Lightweight and fast — designed to be run multiple times a day.
+Run `/sync` during the day to keep the board current. It cross-references board items with your issue tracker (e.g. Jira), detects resolved or unblocked items, flags Doing/Next WIP limits, and refreshes the Active context section in AGENTS.md. Lightweight and fast — designed to be run multiple times a day.
 
 ### Maintenance cycle
 
@@ -203,7 +205,7 @@ Run `/maintenance` at the end of the day or weekly. It handles the deeper work:
 1. **Log compaction** — archives old logs after extracting knowledge
 2. **Pruning** — moves unused brain files to archive
 3. **Promotion** — updates Active Context in AGENTS.md based on usage
-4. **Board hygiene** — flags stale items
+4. **Board hygiene** — flags stale items, Doing WIP, Next Actions length
 5. **Ideas review** — flags stale ideas, reminds about ready ones
 6. **Skill review** — detects repeated patterns, suggests new skills
 7. **Contradiction detection** — maintains knowledge base coherence

@@ -32,13 +32,16 @@ If any tool is unavailable or fails, skip it and note it.
 - Show current sprint tickets with their status.
 - Highlight any that changed status since yesterday.
 
+Present board sections in **file order** (same as `BOARD.md`):
+
 **Currently doing** (from board):
 - Show the "Doing" section.
+- If more than 2 items in Doing, warn about WIP (AGENTS.md Rule 9).
 
 **Next up** (from board):
-- Show the "Next Actions" queue.
+- Show the "Next Actions" queue (max 3–4 items).
 - Cross-reference with sprint tickets — if a sprint ticket isn't on the board, flag it.
-- If Next Actions is empty or stale, suggest items from sprint tickets, Inbox, or Parked.
+- If Next Actions is empty or stale, suggest pulling from Sprint Backlog, sprint tickets, Inbox, or Parked.
 - Ask: "Does this look right, or should we adjust priorities?"
 
 **Waiting/Blocked:**
@@ -46,8 +49,14 @@ If any tool is unavailable or fails, skip it and note it.
 - Cross-reference with `jira-pending blocked` if relevant.
 - Items waiting >7 days: suggest escalation.
 
+**Sprint backlog** (from board):
+- Show the "Sprint Backlog" section — committed sprint work not yet in Next Actions.
+
 **Inbox check:**
 - If there are untriaged items: "You have N items in Inbox to triage."
+
+**Parked (optional):**
+- Mention count or highlights only if relevant to the day.
 
 ### 3. Update the board
 

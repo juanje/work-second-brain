@@ -23,7 +23,7 @@ When the user talks to you:
 
 4. **When in doubt, capture.** Rough capture is better than losing information. Triage comes later.
 
-5. **Ask about prioritization.** If something seems urgent or you're unsure where it fits, ask: "Should this go to Next Actions or stay in Inbox for triage?"
+5. **Ask about prioritization.** If something seems urgent or you're unsure where it fits, ask: "Should this go to Sprint Backlog, Next Actions, or stay in Inbox for triage?"
 
 ### Board item format
 
@@ -31,6 +31,8 @@ When the user talks to you:
 - [ ] Short description | added: YYYY-MM-DD
   - Context: why this matters, what it blocks, who asked, etc.
 ```
+
+**One task or ticket = one board item** (own checkbox). Do not nest a second task inside another item as a sub-note — it misstates WIP and confuses follow-up. Link related work with **Related to:** on **each** affected item. See `board/BOARD.md` for the same rule at the top of the file.
 
 ### Idea file format
 
@@ -54,13 +56,13 @@ Update `last_accessed` and increment `access_count` when you read or modify a fi
 
 <!-- Most relevant files right now. Updated by maintenance and manually. -->
 <!-- Format: - [description](path) — why it's relevant right now -->
-<!-- This section starts empty and is populated through use. -->
+<!-- This section starts minimal and is populated through use. -->
 
 - [Board](board/BOARD.md) — task management and priorities
 
 ## Where to find things
 
-- [Board](board/BOARD.md) — Read when the user asks about tasks, priorities, what to work on next, or when you need to triage captured items. Sections: Inbox, Next Actions, Doing, Waiting, Done, Parked.
+- [Board](board/BOARD.md) — Read when the user asks about tasks, priorities, what to work on next, or when you need to triage captured items. **File order (actionable first):** Doing (WIP 1, max 2 if related), Next Actions (max 3–4), Waiting, Sprint Backlog, Inbox, Parked, Done.
 - [User profile](identity/USER.md) — Read when you need the user's work context, tech stack, team structure, or communication preferences. Also useful when unsure how to format or present information.
 - [Agent guidelines](identity/SOUL.md) — Read when you need to check your operating values, limits, or interaction style.
 - [brain/projects/](brain/projects/) — Read when the user discusses a specific project and you need history, context, or past decisions.
@@ -74,11 +76,11 @@ Update `last_accessed` and increment `access_count` when you read or modify a fi
 
 <!-- Read the full skill file ONLY when the trigger matches. Don't read preemptively. -->
 
-- [run-standup](skills/run-standup.md) — Generates a standup: what was done, current Doing and Next Actions, blockers, inbox pending triage. Use when the user says "standup", "what's on my plate", "what should I work on", or starts a session with no specific request.
+- [run-standup](skills/run-standup.md) — Generates a standup: what was done (via `did`), current Doing, Next Actions, Sprint Backlog, blockers, inbox pending triage. Use when the user says "standup", "what's on my plate", "what should I work on", or starts a session with no specific request.
 - [capture-item](skills/capture-item.md) — Detailed classification procedure for complex captures: items needing multiple destinations, batch processing from meeting dumps, or unclear classification. For simple captures (one task → Inbox), the Core Behavior above is enough.
-- [weekly-review](skills/weekly-review.md) — Compiles the week's work (logs + board), reviews and cleans the board, prepares next week's focus. Use when the user says "weekly review", "what did I do this week", or for broader reviews ("this quarter", "for my manager").
+- [weekly-review](skills/weekly-review.md) — Compiles the week's work (via `did` + logs + board), reviews and cleans the board, prepares next week's focus. Use when the user says "weekly review", "what did I do this week", or for broader reviews ("this quarter", "for my manager").
 - [next-task](skills/next-task.md) — Shows the next task to work on with full context, plus the rest of the queue. Use when the user says "next", "what's next", "what should I work on now", or runs `/next`.
-- [sync-board](skills/sync-board.md) — Lightweight mid-day sync: cross-references board with Jira, detects resolved/unblocked items, refreshes Active context. Use when the user says "sync", "update board status", or runs `/sync`.
+- [sync-board](skills/sync-board.md) — Lightweight mid-day sync: cross-references board with the issue tracker, detects resolved/unblocked items, refreshes Active context. Use when the user says "sync", "refresh", "update board status", or runs `/sync`.
 
 ## Getting work data
 
@@ -99,4 +101,6 @@ Three CLI tools provide objective data. Always check memory first (Rule 8) befor
 5. Never delete files from `brain/` without moving them to `brain/archive/` first.
 6. Never modify `identity/USER.md` without informing the user first.
 7. **Commit changes regularly.** After creating or updating files — especially after a conversation that produces multiple changes — make a git commit grouping related changes. One commit per logical group of changes, not per individual file. Don't let work go uncommitted.
-8. **Check memory before external calls.** Before querying external tools, check the board (Done, Waiting, Inbox), logs (`memory/logs/`), and brain files first. The information may already be captured. Only call external tools if the data is missing or needs to be fresh.
+8. **Check memory before external calls.** Before querying external tools, check the board (in file order: Doing → Next → Waiting → Sprint Backlog → Inbox → Parked → Done), logs (`memory/logs/`), and brain files first. The information may already be captured. Only call external tools if the data is missing or needs to be fresh.
+
+9. **Doing WIP.** The board `Doing` section targets **one** active task; at most **two** if they are tightly related. Whenever you read or update `board/BOARD.md`, or when the user adds or keeps work in **Doing**, check the count of open items there. If **Doing** has **more than two** items, **warn the user** that WIP is exceeded, explain the focus cost, and suggest finishing or moving items back to Next Actions / Sprint Backlog. Do not silently accept overloaded Doing.

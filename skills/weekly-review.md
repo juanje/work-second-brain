@@ -23,12 +23,13 @@ or for broader reviews ("what have I done this quarter", "review for my manager"
 
 ### 2. Present the weekly summary
 
-**Activity summary:**
-- Key work items, grouped by project or theme.
+**Activity summary** (from `did`):
+- Key commits, bugs resolved, reviews, issue tracker updates.
+- Group by project or theme if possible.
 
 **Completed this week:**
 - Items from "Done" on the board.
-- Cross-reference with logs for things done but not on the board.
+- Cross-reference with `did` output for things done but not on the board.
 
 **Still in progress:**
 - Items in "Doing". On track or at risk?
@@ -46,10 +47,14 @@ or for broader reviews ("what have I done this quarter", "review for my manager"
 
 ### 3. Clean the board
 
+Follow `BOARD.md` section order when walking the board: Doing → Next → Waiting → Sprint Backlog → Inbox → Parked → Done.
+
 - Move "Done" items to `brain/reviews/YYYY-WNN.md` (ISO week number).
 - Clear the "Done" section on the board.
+- Review **Doing** — at most 2 items (WIP); consolidate or move extras to Next / Sprint Backlog.
 - Review "Inbox" — triage anything remaining.
-- Review "Next Actions" — still relevant? Anything to add?
+- Review "Sprint Backlog" — still relevant for the next sprint? Roll unfinished items forward or drop.
+- Review "Next Actions" — still relevant? Anything to add? Keep at 3–4 items max.
 - Review "Waiting" — any stale items to escalate?
 
 ### 3b. Review ideas
@@ -65,7 +70,7 @@ or for broader reviews ("what have I done this quarter", "review for my manager"
 
 - Ask: "What should be your top priorities next week?"
 - Suggest items from the board based on age, context, and patterns.
-- Move agreed priorities to "Next Actions".
+- Move agreed priorities to "Sprint Backlog" or "Next Actions" as appropriate (Next Actions stays short).
 
 ### 5. Broader review mode
 

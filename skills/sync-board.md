@@ -9,7 +9,7 @@ created: YYYY-MM-DD
 ## When to use
 
 Lightweight mid-day sync to keep the board and Active context current.
-Use when the user says "sync", "update board status", or runs `/sync`.
+Use when the user says "sync", "refresh", "update board status", or runs `/sync`.
 Can be run multiple times a day — designed to be fast (seconds, not minutes).
 
 NOT a replacement for `sleep-maintenance`, which does deep end-of-day work
@@ -28,7 +28,7 @@ If any tool is unavailable or fails, skip it and note it.
 
 ### 2. Cross-reference board with Jira
 
-For each ticket in **Next Actions**, **Doing**, and **Waiting**:
+For each ticket in **Sprint Backlog**, **Next Actions**, **Doing**, and **Waiting**:
 - Compare board status with Jira status.
 - If a Jira ticket was resolved/closed but is still active on the board → flag it.
 - If a Jira ticket changed status (e.g. New → In Progress) → flag it.
@@ -55,7 +55,9 @@ For each Waiting item:
 ### 5. Refresh Active context (AGENTS.md)
 
 Update the Board line in the "Active context" section of AGENTS.md:
-- Refresh item counts per section (Inbox, Next Actions, Doing, Waiting).
+- Refresh item counts per section in **actionable order:** Doing, Next Actions, Waiting, Sprint Backlog, Inbox, Parked (count open items), Done.
+- If **Doing** has more than **2** items, flag WIP exceeded (see AGENTS.md Rule 9).
+- If **Next Actions** has more than 4 items, flag it (WIP limit is 3–4).
 - Only update other Active context entries if files were created or heavily
   accessed since last sync.
 
@@ -72,7 +74,7 @@ Present a brief sync report:
 **Flags (need your input):**
 - [items needing decision, or "none"]
 
-**Board state:** N Inbox | N Next Actions | N Doing | N Waiting
+**Board state:** N Doing | N Next | N Waiting | N Sprint Backlog | N Inbox | N Parked | N Done
 ```
 
 Don't create a log file — this is lightweight. Changes are tracked by git commits.
