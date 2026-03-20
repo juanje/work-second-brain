@@ -1,280 +1,170 @@
 # Work Second Brain
 
-A persistent, file-based memory system for AI coding assistants. The user does brain dumps throughout the day — tasks, decisions, ideas, context, random thoughts — and the AI agent captures, organizes, and maintains everything in Markdown files.
+A persistent, file-based memory system for AI coding assistants. You do brain dumps throughout the day — tasks, decisions, ideas, context, random thoughts — and the AI agent captures, organizes, and maintains everything in Markdown files.
 
-> **Note:** After setup, delete this README, the LICENSE file, and the `scripts/` directory (once the scripts are copied to their final location, e.g. `~/.local/bin/`). These are reference files for the human, not for the agent. Keeping them adds unnecessary tokens to the agent's context and can distract from operational files.
+## Table of contents
 
-## Design principles
+- [Getting started](#getting-started)
+- [What it does](#what-it-does)
+- [Structured workflows](#structured-workflows)
+- [The board](#the-board)
+- [Maintenance cycle](#maintenance-cycle)
+- [Structure](#structure)
+- [External tools (optional)](#external-tools-optional)
+- [Compatibility](#compatibility)
+- [Customization](#customization)
+- [Design principles: why this works](#design-principles-why-this-works)
+- [License](#license)
 
-1. **Files first.** Markdown is the single source of truth. Human-readable, Git-versionable, portable across agents. No databases, no vendor lock-in.
-2. **Minimum viable, then grow.** The system starts nearly empty. Structure emerges from use, not from upfront design.
-3. **Hebbian plasticity.** What gets used gets promoted (to active context). What doesn't gets archived. The agent's attention mirrors actual relevance.
-4. **Progressive disclosure.** The agent only loads what it needs. AGENTS.md is a lightweight index; skills and knowledge load on demand.
+## Getting started
 
-## Quick start
+1. Clone or copy this repository into a new directory.
+2. Open it as a workspace in your AI-powered editor (Cursor, VS Code + Copilot, Claude Code, etc.).
+3. Run `/setup` to start the guided configuration, or `/setup <language>` to run it in your preferred language (e.g., `/setup español`).
+4. The agent will walk you through: your profile, tool configuration, and optionally seeding the board with real data from your issue tracker and Git activity.
+5. After setup, the system is ready. Start brain-dumping.
 
-1. Clone or copy this skeleton into a new directory.
-2. Open it as a workspace in your AI-enabled editor (Cursor, VS Code + Copilot, etc.).
-3. Edit `identity/USER.md` with your profile — role, team, tools, work style.
-4. Set up the CLI tools (see [Tool setup](#tool-setup) below).
-5. Start talking to the agent. Brain dump away.
-6. **Delete this README** once you're familiar with the system.
+## What it does
 
-The system populates itself through use. The more you talk to it, the more it knows.
+Talk to the agent naturally. It will:
 
-> **Note:** Remember, this is an initial and generic setup. Personalize it to your needs, tools, and workflows.
+- **Capture tasks** → Board Inbox (triage into Sprint Backlog or Next Actions when ready)
+- **Capture decisions** → Project files or concept files, with reasoning
+- **Capture ideas** → Ideas directory, with a lifecycle (seed → developing → ready → converted)
+- **Capture lessons** → Concept files for future reference
+- **Capture requests** → Request files + board, with context about who asked and why
+- **Confirm what it captured** — always
+
+You don't need to think about where things go. The agent classifies and files them based on what you say. Over time, your workspace becomes a searchable, structured knowledge base of everything you've worked on, decided, and learned.
+
+## Structured workflows
+
+| Command | What it does |
+|---------|-------------|
+| `/standup` | Shows what was done, current priorities, blockers, inbox to triage |
+| `/next` | Shows the next task with full context from the issue tracker and brain |
+| `/reflect` | Processes the conversation into a structured daily log |
+| `/weekly` | Compiles the week's work, cleans the board, plans next week |
+| `/sync` | Quick board sync: cross-references board with the issue tracker |
+| `/maintenance` | Deep maintenance: compaction, pruning, promotion, board hygiene |
+| `/refresh` | Re-reads AGENTS.md — useful when the agent loses context in long conversations |
+
+These commands are available as slash commands in Cursor and Claude Code. For other agents, trigger them by asking directly (e.g., "run a standup", "do a weekly review").
+
+## The board
+
+A Kanban-style task board ordered by actionability:
+
+**Doing** (WIP target: 1, max 2 if related) → **Next Actions** (max 3-4) → **Waiting** → **Sprint Backlog** → **Inbox** → **Parked** → **Done**
+
+Items flow from capture to completion. The agent enforces WIP limits — if you have too much in Doing, it will tell you. During weekly reviews, Done items are archived into review files for future reference (quarterly reviews, manager conversations).
+
+## Maintenance cycle
+
+A periodic deep maintenance that keeps the system healthy. Run it with `/maintenance` at the end of the day or weekly.
+
+1. **Log compaction** — archives old logs after extracting knowledge
+2. **Pruning** — moves unused brain files to archive (Hebbian degradation)
+3. **Promotion** — updates the agent's active context based on usage patterns (Hebbian promotion)
+4. **Board hygiene** — flags stale blockers, untriaged inbox, WIP violations
+5. **Ideas review** — flags stale ideas, reminds about mature ones ready for action
+6. **Skill review** — detects repeated patterns in logs and suggests new skills
+7. **Contradiction detection** — finds and flags inconsistencies in the knowledge base
 
 ## Structure
 
 ```
-work_brain/
 ├── AGENTS.md                    → Agent working memory. Loaded automatically.
-├── README.md                    → This file. Delete after setup.
-├── scripts/
-│   ├── jira-pending.sh          → Query pending Jira tickets.
-│   └── jira-detail.sh           → Get full ticket details.
 ├── board/
-│   └── BOARD.md                 → Kanban (order: Doing, Next, Waiting, Sprint Backlog, Inbox, Parked, Done).
+│   └── BOARD.md                 → Kanban board.
 ├── identity/
 │   ├── USER.md                  → Your work profile and preferences.
 │   └── SOUL.md                  → Agent identity, values, and limits.
-├── skills/
-│   ├── run-standup.md           → Interactive: standup summary.
-│   ├── capture-item.md          → Interactive: complex item classification.
-│   ├── weekly-review.md         → Interactive: weekly/quarterly review.
-│   ├── next-task.md             → Interactive: show next task with context.
-│   ├── sync-board.md            → Interactive: lightweight mid-day board sync.
-│   ├── process-conversation.md  → Triggered: brain dump → structured log.
-│   └── sleep-maintenance.md     → Triggered: deep maintenance cycle (7 phases).
+├── skills/                      → Reusable procedures, loaded on demand.
 ├── brain/
 │   ├── projects/                → Active project context and decisions.
-│   ├── concepts/                → Generalized knowledge, lessons, patterns.
-│   ├── teams/                   → Team structure, people, who works on what.
+│   ├── concepts/                → Lessons learned, patterns, knowledge.
+│   ├── teams/                   → Team structure, who works on what.
 │   ├── requests/                → Cross-team requests.
-│   ├── reviews/                 → Weekly/sprint review summaries.
-│   ├── ideas/                   → Unformed thoughts with lifecycle (seed → ready).
-│   │   └── _scratchpad.md       → Quick idea capture for one-liners.
+│   ├── reviews/                 → Weekly/sprint review archives.
+│   ├── ideas/                   → Ideas with lifecycle tracking.
 │   └── archive/                 → Files degraded by disuse.
-├── memory/
-│   ├── logs/                    → Daily conversation logs (curated summaries).
-│   └── archive/                 → Old logs (compacted by maintenance).
-└── .cursor/commands/            → Slash commands for Cursor.
-    ├── reflect.md               → /reflect — process conversation into log.
-    ├── standup.md               → /standup — standup summary.
-    ├── weekly.md                → /weekly — weekly review.
-    ├── maintenance.md           → /maintenance — deep maintenance cycle.
-    ├── next.md                  → /next — show next task.
-    ├── sync.md                  → /sync — quick board sync.
-    └── refresh.md               → /refresh — re-read AGENTS.md in long conversations.
+└── memory/
+    ├── logs/                    → Daily conversation logs.
+    └── archive/                 → Compacted old logs.
 ```
 
-## Tool setup
+The system starts nearly empty. Directories populate through use. The agent creates files as needed — you don't have to set up anything manually beyond the initial configuration.
 
-The system includes three CLI tools that provide objective work data to the agent. All are optional but recommended for a fully functional system.
+## External tools (optional)
 
-### `did` — activity aggregator
+The system can integrate with CLI tools that provide objective work data. These are optional — the system works with board + logs alone, but external data makes standups, syncs, and reviews richer.
 
-[`did`](https://github.com/psss/did) is a CLI tool that gathers status reports from development tools (Git, GitLab, GitHub, Jira, Bugzilla, etc.).
+- **[`did`](https://github.com/psss/did)** — Aggregates activity from Git, GitLab, GitHub, Jira, Bugzilla, and other development tools into status reports. Used by the standup and weekly review skills.
+- **Jira scripts** — Two included scripts (`jira-pending`, `jira-detail`) that query your Jira instance for current ticket state and full ticket details. Used by the standup, sync, next-task, and weekly review skills.
 
-**Install:**
-
-```bash
-pip install did
-```
-
-**Configure** (`~/.did/config`):
-
-```ini
-[general]
-email = your.email@example.com
-
-[git]
-type = git
-apps = /path/to/your/repos/*
-
-[github]
-type = github
-url = https://api.github.com/
-token = <your-github-token>
-login = <your-github-username>
-
-[jira]
-type = jira
-url = https://your-instance.atlassian.net
-token = <your-jira-api-token>
-user = your.email@example.com
-project = YOUR_PROJECT
-```
-
-See the [`did` documentation](https://github.com/psss/did) for all available plugins (GitLab, Bugzilla, Pagure, Gerrit, etc.) and configuration options.
-
-**Test:**
-
-```bash
-did yesterday
-did this week
-did yesterday --jira    # filter by source for faster queries
-```
-
-### `jira-pending` — current Jira state
-
-Queries your pending Jira tickets. Included in `scripts/jira-pending.sh`.
-
-**Setup:**
-
-1. Edit `scripts/jira-pending.sh` and set your Jira URL, email, and project:
-   ```bash
-   JIRA_URL="https://your-instance.atlassian.net"
-   JIRA_USER="your.email@example.com"
-   PROJECT="YOUR_PROJECT"
-   ```
-2. Create a Jira API token at https://id.atlassian.com/manage-profile/security/api-tokens
-3. Save the token:
-   ```bash
-   mkdir -p ~/.did
-   echo "your-api-token" > ~/.did/jira.token
-   chmod 600 ~/.did/jira.token
-   ```
-4. Make executable and link:
-   ```bash
-   chmod +x scripts/jira-pending.sh
-   ln -s "$(pwd)/scripts/jira-pending.sh" ~/.local/bin/jira-pending
-   ```
-
-**Usage:**
-
-```bash
-jira-pending assigned   # all open tickets assigned to me
-jira-pending sprint     # my tickets in the current sprint
-jira-pending summary    # count by status
-```
-
-### `jira-detail` — ticket details
-
-Shows full ticket detail (description, comments, links). Included in `scripts/jira-detail.sh`. Uses the same credentials as `jira-pending`.
-
-**Setup:**
-
-1. Edit `scripts/jira-detail.sh` and set the same Jira URL and email.
-2. Make executable and link:
-   ```bash
-   chmod +x scripts/jira-detail.sh
-   ln -s "$(pwd)/scripts/jira-detail.sh" ~/.local/bin/jira-detail
-   ```
-
-**Usage:**
-
-```bash
-jira-detail PROJ-1234                # full ticket detail
-jira-detail PROJ-1234 --comments-only  # just comments
-jira-detail PROJ-1234 --last 3        # last 3 comments
-```
-
-## How it works
-
-### During the day
-
-Talk to the agent naturally. It will:
-- Capture tasks → Board Inbox (triage into Sprint Backlog or Next Actions when ready)
-- Capture decisions → `brain/projects/` or `brain/concepts/`
-- Capture ideas → `brain/ideas/`
-- Capture lessons → `brain/concepts/`
-- Confirm what it captured
-
-**Board model:** **Inbox** is for untriaged capture. **Sprint Backlog** holds work committed for the sprint that is not yet "next." **Next Actions** is a short immediate queue (max 3–4 items). **Doing** targets one task at a time (max two if tightly related). One task or ticket = one board line; link related items with `Related to:` on each. See `board/BOARD.md` and `AGENTS.md`.
-
-### Commands
-
-| Command | What it does |
-|---------|-------------|
-| `/standup` | Shows what was done, current priorities, blockers, inbox |
-| `/next` | Shows the next task with full context |
-| `/reflect` | Processes the conversation into a structured daily log |
-| `/weekly` | Compiles the week's work, cleans the board, plans next week |
-| `/sync` | Quick board sync: cross-references board with Jira, detects changes |
-| `/refresh` | Re-reads AGENTS.md — use when the agent loses context in long conversations |
-| `/maintenance` | Runs deep maintenance: compaction, pruning, promotion, hygiene |
-
-### Board sync
-
-Run `/sync` during the day to keep the board current. It cross-references board items with your issue tracker (e.g. Jira), detects resolved or unblocked items, flags Doing/Next WIP limits, and refreshes the Active context section in AGENTS.md. Lightweight and fast — designed to be run multiple times a day.
-
-### Maintenance cycle
-
-Run `/maintenance` at the end of the day or weekly. It handles the deeper work:
-1. **Log compaction** — archives old logs after extracting knowledge
-2. **Pruning** — moves unused brain files to archive
-3. **Promotion** — updates Active Context in AGENTS.md based on usage
-4. **Board hygiene** — flags stale items, Doing WIP, Next Actions length
-5. **Ideas review** — flags stale ideas, reminds about ready ones
-6. **Skill review** — detects repeated patterns, suggests new skills
-7. **Contradiction detection** — maintains knowledge base coherence
-
-## Customization
-
-### Adding new skills
-
-Create a new file in `skills/` with this structure:
-
-```markdown
----
-last_accessed: YYYY-MM-DD
-access_count: 0
-created: YYYY-MM-DD
----
-
-# Skill: Verb object
-
-## When to use
-<Clear trigger description>
-
-## Procedure
-<Numbered steps>
-```
-
-Then add it to the Skills section in `AGENTS.md` with a descriptive trigger.
-
-### Creating new brain directories
-
-If you need a new category of knowledge, create a directory under `brain/` and add it to the "Where to find things" section in `AGENTS.md` with a clear trigger description.
+These tools are configured during the interactive setup. If you don't use Jira or prefer a different issue tracker, the setup agent will adapt the system accordingly.
 
 ## Compatibility
 
-This system works with any AI editor that reads `AGENTS.md` from the workspace root:
+The system works with any AI agent that reads `AGENTS.md` from the workspace root:
 
-- **Cursor** — full support (AGENTS.md + .cursor/commands/)
-- **Claude Code** — full support (AGENTS.md + .claude/commands/)
+- **Cursor** — full support (AGENTS.md + slash commands)
+- **Claude Code** — full support (AGENTS.md + commands)
 - **GitHub Copilot** — reads AGENTS.md
-- **Windsurf, Zed, RooCode** — reads AGENTS.md
+- **Windsurf, Zed, Gemini CLI, RooCode** — reads AGENTS.md
 
-For Claude Code, copy `.cursor/commands/` to `.claude/commands/`.
+Slash commands are provided for Cursor (`.cursor/commands/`). For Claude Code, copy them to `.claude/commands/`. For other agents, trigger workflows by asking directly.
+
+## Customization
+
+### Adding skills
+
+Skills are reusable procedures in `skills/`. Create a new `.md` file with a "When to use" trigger and a numbered "Procedure", then add it to the Skills section in `AGENTS.md`. The agent will pick it up on the next conversation.
+
+### Adding brain directories
+
+If you need a new category of knowledge, create a directory under `brain/` and add it to the "Where to find things" section in `AGENTS.md` with a description of when the agent should look there.
+
+### Adapting to different tools
+
+The "Getting work data" section in `AGENTS.md` defines which CLI tools the agent can call. Replace or extend these with whatever tools your workflow uses — the agent just needs to know the command, what it returns, and when to use it.
+
+## Design principles: why this works
+
+Most AI coding assistants are stateless. Each conversation starts from zero. You repeat your context, re-explain your priorities, and lose the thread of what you were doing yesterday. This system gives the agent a persistent memory that grows with use.
+
+But it's not just a note-taking system with an AI front-end. The design is grounded in principles from neuroscience, complex systems theory, and practical experience with AI agent limitations.
+
+### Files as memory substrate
+
+The brain doesn't store memories in a single location — it distributes them across networks that strengthen or weaken based on use. This system uses plain Markdown files as its memory substrate: distributed, human-readable, Git-versionable, and portable across any AI agent that can read files.
+
+There are no databases, no embeddings, no vendor-specific formats. If your agent breaks, switches, or disappears, your knowledge is still there in files you can read, search, and edit yourself.
+
+### Hebbian plasticity: use it or lose it
+
+In neuroscience, Hebb's principle states that neurons that fire together wire together — connections strengthen with use and weaken without it. This system applies the same idea to information management.
+
+Every file tracks when it was last accessed and how often. A periodic maintenance cycle uses these metrics to **promote** frequently-used files to the agent's active context (making them immediately visible) and **archive** files that haven't been touched in weeks. The agent's attention automatically mirrors what's actually relevant to your work right now, without manual curation.
+
+### Progressive disclosure: load only what's needed
+
+The agent doesn't read everything at startup. It reads a lightweight index file (`AGENTS.md`, ~150 lines) that contains just enough to know where things are and when to look deeper. Skills, project context, and knowledge files are loaded on demand — only when a task requires them.
+
+This mirrors how human expertise works: you don't recall everything you know before starting a task. You activate relevant knowledge as the context demands it. For AI agents, this has a practical benefit too — it keeps the context window clean, which directly improves response quality.
+
+### Emergence from simple rules
+
+Complex systems theory shows that sophisticated behavior can emerge from simple rules applied consistently. This system doesn't try to be a complete project management tool. Instead, it gives the agent a small set of clear behaviors:
+
+- **Capture everything the user mentions.** Tasks, ideas, decisions, notes — file them in the right place.
+- **Confirm what was captured.** Brief acknowledgment, no ceremony.
+- **Don't reorganize proactively.** Structure emerges from use, not from upfront design.
+- **When in doubt, capture.** A rough note is better than a lost thought.
+
+Over time, these simple rules produce a knowledge base that reflects how you actually work — not how you planned to work.
 
 ## License
 
-This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.
-
-## 🤖 AI Tools Disclaimer
-
-This project was developed with the assistance of artificial intelligence tools:
-
-**Tools used:**
-- **Cursor**: Code editor with AI capabilities
-- **Claude-4.6-Opus**: Anthropic's language model
-
-**Division of responsibilities:**
-
-**AI (Cursor + Claude-4.6-Opus)**:
-- 🔧 Initial code prototyping
-- 📝 Generation of examples and test cases
-- 🐛 Assistance in debugging and error resolution
-- 📚 Documentation and comments writing
-- 💡 Technical implementation suggestions
-
-**Human (Juanje Ojeda)**:
-- 🎯 Specification of objectives and requirements
-- 🔍 Critical review of code and documentation
-- 💬 Iterative feedback and solution refinement
-- 📋 Definition of project's educational structure
-- ✅ Final validation of concepts and approaches
-
-**Collaboration philosophy**: AI tools served as a highly capable technical assistant, while all design decisions, educational objectives, and project directions were defined and validated by the human.
+MIT License. See [LICENSE](LICENSE) for details.
