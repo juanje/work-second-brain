@@ -14,7 +14,7 @@ When the user says "next", "what's next", "what should I work on now", or runs t
 
 ### 1. Read the board
 
-Read `board/BOARD.md` and extract the **Next Actions** list (immediate queue; max 3–4 items). Optionally mention **Sprint Backlog** as upcoming work after the Next Actions queue.
+Read `work/BOARD.md` and extract the **Next Actions** list (immediate queue; max 3–4 items). Optionally mention **Sprint Backlog** as upcoming work after the Next Actions queue.
 
 ### 2. Identify the top task
 
@@ -25,7 +25,7 @@ The first item in Next Actions is the next task. Extract its ticket ID (if any).
 If the task has a Jira ticket ID (e.g. PROJ-1234):
 - Run `jira-detail <TICKET_ID>` to get description, status, comments, and links.
 
-Also check `brain/projects/` for any related project context that might help.
+Also check `agent_brain/projects/` for any related project context that might help.
 
 ### 4. Present the output
 

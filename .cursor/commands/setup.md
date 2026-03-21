@@ -1,4 +1,4 @@
-Run the Work Second Brain setup.
+Run the Work Agentic Buddy setup.
 
 If a language is specified after the command (e.g., `/setup español`), conduct the entire setup conversation in that language. If no language is specified, detect the user's language from their first response and continue in that language. All **generated content** (files, board items, logs) is always in English regardless of conversation language.
 
@@ -10,10 +10,10 @@ First, determine if this is a fresh setup or a reconfiguration:
 2. If it contains `<!-- POST-SETUP:` → **Fresh setup.** Proceed with the full setup below.
 3. If it does NOT contain that marker → **System already configured.** Switch to reconfiguration mode:
    > The system is already set up. I can help you with:
-   > - Update your profile (`identity/USER.md`)
+   > - Update your profile (`agent_brain/identity/USER.md`)
    > - Add or reconfigure tools (`did`, Jira scripts, or new ones)
    > - Seed the board with current sprint/activity data
-   > - Add a new project to `brain/projects/`
+   > - Add a new project to `agent_brain/projects/`
    >
    > What would you like to update?
 
@@ -33,7 +33,7 @@ Read `templates/AGENTS.md` to understand the system you're setting up (don't exp
 
 Then tell the user (in their language):
 
-> I'll help you set up your Work Second Brain. I'll ask a few questions about your work to personalize the system. It takes about 5 minutes.
+> I'll help you set up your Work Agentic Buddy. I'll ask a few questions about your work to personalize the system. It takes about 5 minutes.
 >
 > After that, the system will be ready to use. You can start brain-dumping tasks, ideas, and notes right away.
 
@@ -65,9 +65,9 @@ Ask these questions **one group at a time**, not all at once. Adapt based on ans
 - What language do you prefer to chat in? (All generated content will be in English regardless.)
 - How do you like information presented? (Direct and brief? Detailed? Structured?)
 
-### Step 3: Write identity/USER.md
+### Step 3: Write agent_brain/identity/USER.md
 
-Using the answers, fill in `identity/USER.md`. Follow the template structure already in the file but replace the placeholder comments with real content. Be concise — this file is reference, not a biography.
+Using the answers, fill in `agent_brain/identity/USER.md`. Follow the template structure already in the file but replace the placeholder comments with real content. Be concise — this file is reference, not a biography.
 
 ### Step 4: Configure tools (if applicable)
 
@@ -130,7 +130,7 @@ wait
 ```
 
 From the results:
-- Create the first daily log `memory/logs/YYYY-MM-DD.md` with a summary of today's activity.
+- Create the first daily log `logs/YYYY-MM-DD.md` with a summary of today's activity.
 - Add key recent items (open MRs, ongoing tickets) to the appropriate board sections.
 - If there's enough data for a mini weekly summary, mention it to the user as context.
 
@@ -145,7 +145,7 @@ Capture whatever the user mentions into the board (Inbox, or directly to the rig
 
 Based on the tools the user has (or doesn't have):
 
-- If they **don't use Jira**: remove references to `jira-pending` and `jira-detail` from `templates/AGENTS.md` in the "Getting work data" section and from any skills that call them (`run-standup.md`, `sync-board.md`, `weekly-review.md`, `next-task.md`). Replace with their actual issue tracker commands if applicable, or simplify to board + logs only.
+- If they **don't use Jira**: remove references to `jira-pending` and `jira-detail` from `templates/AGENTS.md` in the "Getting work data" section and from any skills that call them (`agent_brain/skills/run-standup.md`, `agent_brain/skills/sync-board.md`, `agent_brain/skills/weekly-review.md`, `agent_brain/skills/next-task.md`). Replace with their actual issue tracker commands if applicable, or simplify to board + logs only.
 - If they **don't use `did`**: remove `did` references from the same places. The standup and weekly review will rely on board + logs instead.
 - If they use **different tools**: adapt the "Getting work data" section and skill references accordingly.
 
@@ -185,7 +185,7 @@ Execute these steps in order:
 
 5. Tell the user (in their language):
 
-> ✅ Your Work Second Brain is ready.
+> Your Work Agentic Buddy is ready.
 >
 > **To activate it now**, run **/refresh** so I reload the new AGENTS.md and start working in operational mode. Alternatively, start a new conversation — I'll pick up the new instructions automatically.
 >

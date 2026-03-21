@@ -19,14 +19,14 @@ in AGENTS.md is sufficient — don't read this skill for those.
 
 ### 1. Identify the item type
 
-- **Task** (something to do) → `board/BOARD.md` Inbox
-- **Request from another team** → board Inbox + `brain/requests/YYYY-MM-DD_short-description.md` with context
-- **Bug or known error** → board Inbox + `brain/concepts/` if it's a pattern worth documenting
-- **Decision and its reasoning** → `brain/projects/<project>.md` or `brain/concepts/`
-- **Meeting notes** → `brain/projects/<project>.md` under the relevant project
-- **Lesson learned** → `brain/concepts/`
-- **Improvement idea / tech debt** (concrete, actionable) → `board/BOARD.md` Parked
-- **Unformed idea / project concept / draft proposal** → `brain/ideas/YYYY-MM-DD_short-description.md` (or `_scratchpad.md` for one-liners)
+- **Task** (something to do) → `work/BOARD.md` Inbox
+- **Bug or known error** → board Inbox + `agent_brain/concepts/` if it's a pattern worth documenting
+- **Decision and its reasoning** → `agent_brain/projects/<project>.md` or `agent_brain/concepts/`
+- **Meeting notes** → `agent_brain/projects/<project>.md` under the relevant project
+- **Lesson learned** → `agent_brain/concepts/`
+- **Improvement idea / tech debt** (concrete, actionable) → `work/BOARD.md` Parked
+- **Unformed idea / project concept / draft proposal** → `agent_brain/ideas/YYYY-MM-DD_short-description.md` (or `_scratchpad.md` for one-liners)
+- **Anything else** (cross-team requests, team notes, etc.) → create the appropriate directory inside `agent_brain/` if it doesn't exist, and capture there + board if actionable.
 
 ### 2. Capture with context
 
@@ -37,7 +37,7 @@ For board items, use the standard format. **Each distinct task or ticket is its 
   - Context: why this matters, what it blocks, who asked, etc.
 ```
 
-For `brain/` files, create with frontmatter:
+For `agent_brain/` files, create with frontmatter:
 
 ```yaml
 ---

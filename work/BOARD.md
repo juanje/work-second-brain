@@ -14,7 +14,7 @@ Sections are ordered for **actionability**: what you are doing now, what is next
 - **Sprint Backlog** — committed for the current sprint, triaged. Pull into Next Actions when there is capacity. Your issue tracker remains the system of record.
 - **Inbox** — capture first, untriaged. Move to Sprint Backlog, Next Actions, Parked, or discard during standup or review.
 - **Parked** — ideas, tech debt, nice-to-haves. For when you are less busy.
-- **Done** — completions. Cleared during weekly review into `brain/reviews/`. You rarely need to read this section; ask the agent for summaries.
+- **Done** — completions. Cleared during weekly review into review files. You rarely need to read this section; ask the agent for summaries.
 
 Flow: **Capture → Inbox** (triage) **→ Sprint Backlog or Parked** → pull into **Next Actions** (max 3–4) **→ Doing → Done** (Waiting when blocked).
 
@@ -67,6 +67,6 @@ _Ideas, tech debt, improvements. Not urgent, not forgotten._
 
 ## Done
 
-_Completed. Cleared during weekly review into brain/reviews/._ Rarely need to read this; ask the agent for "what did I do" summaries.
+_Completed. Cleared during weekly review into review files._ Rarely need to read this; ask the agent for "what did I do" summaries.
 
 ---

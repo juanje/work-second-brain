@@ -20,7 +20,7 @@ NOT a replacement for `sleep-maintenance`, which does deep end-of-day work
 ### 1. Gather current state
 
 Run in parallel:
-- Read `board/BOARD.md`.
+- Read `work/BOARD.md`.
 - Run `jira-pending sprint` — current sprint ticket statuses.
 - Run `jira-pending updated` — tickets updated recently.
 
@@ -82,5 +82,5 @@ Don't create a log file — this is lightweight. Changes are tracked by git comm
 ### 7. Git commit
 
 ```bash
-git add board/BOARD.md AGENTS.md && git commit -m "sync: YYYY-MM-DD HH:MM" 2>/dev/null || true
+git add work/BOARD.md AGENTS.md && git commit -m "sync: YYYY-MM-DD HH:MM" 2>/dev/null || true
 ```

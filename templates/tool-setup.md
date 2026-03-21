@@ -167,10 +167,10 @@ If the user doesn't use Jira, the setup agent should:
 1. **Remove** `scripts/jira-pending.sh` and `scripts/jira-detail.sh`.
 2. **Remove** references to `jira-pending` and `jira-detail` from:
    - `templates/AGENTS.md` → "Getting work data" section
-   - `skills/run-standup.md` → step 1 (remove `jira-pending` calls)
-   - `skills/sync-board.md` → steps 1-3 (remove Jira cross-referencing, simplify to board-only sync)
-   - `skills/weekly-review.md` → step 1 (remove `jira-pending` calls)
-   - `skills/next-task.md` → step 3 (remove `jira-detail` call)
+   - `agent_brain/skills/run-standup.md` → step 1 (remove `jira-pending` calls)
+   - `agent_brain/skills/sync-board.md` → steps 1-3 (remove Jira cross-referencing, simplify to board-only sync)
+   - `agent_brain/skills/weekly-review.md` → step 1 (remove `jira-pending` calls)
+   - `agent_brain/skills/next-task.md` → step 3 (remove `jira-detail` call)
 3. If the user has a **different issue tracker** with CLI tools, add those to
    the "Getting work data" section following the same format: tool name, what
    it does, basic syntax.
@@ -180,5 +180,5 @@ If the user doesn't use Jira, the setup agent should:
 Similarly, if the user doesn't use `did`:
 
 1. **Remove** `did` references from `templates/AGENTS.md` → "Getting work data".
-2. **Remove** `did` calls from `skills/run-standup.md` and `skills/weekly-review.md`.
+2. **Remove** `did` calls from `agent_brain/skills/run-standup.md` and `agent_brain/skills/weekly-review.md`.
 3. The standup and weekly review will rely on board + logs for activity data.

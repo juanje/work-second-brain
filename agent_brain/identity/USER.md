@@ -9,7 +9,7 @@ created: YYYY-MM-DD
 ## Professional context
 
 - **Role:** <!-- e.g. Software engineer, Tech Lead, Product Manager -->
-- **Team:** <!-- Your team name. Create brain/teams/<team>.md for full team structure. -->
+- **Team:** <!-- Your team name -->
 - **Focus:** <!-- Your main technical areas -->
 - **Stack:** <!-- Key technologies you work with daily -->
 - **Current focus:** <!-- What you're working on right now -->
@@ -17,7 +17,7 @@ created: YYYY-MM-DD
 ## Project landscape
 
 <!-- List your main repos/projects, grouped if needed.
-     Create brain/projects/<project>.md for detailed context on each. -->
+     Create agent_brain/projects/<project>.md for detailed context on each. -->
 
 ## Work style
 

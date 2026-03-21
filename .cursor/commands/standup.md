@@ -1,2 +1,2 @@
 Run a standup summary.
-Read skills/run-standup.md and execute the full procedure.
+Read agent_brain/skills/run-standup.md and execute the full procedure.

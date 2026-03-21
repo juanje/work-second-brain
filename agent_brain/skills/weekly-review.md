@@ -18,8 +18,8 @@ or for broader reviews ("what have I done this quarter", "review for my manager"
 - Run `did this week` to get objective activity data.
 - Run `jira-pending summary` to get current ticket status overview.
 - Run `jira-pending sprint` to see sprint ticket states.
-- Read logs from `memory/logs/` for the current week.
-- Read `board/BOARD.md`.
+- Read logs from `logs/` for the current week.
+- Read `work/BOARD.md`.
 
 ### 2. Present the weekly summary
 
@@ -49,7 +49,7 @@ or for broader reviews ("what have I done this quarter", "review for my manager"
 
 Follow `BOARD.md` section order when walking the board: Doing → Next → Waiting → Sprint Backlog → Inbox → Parked → Done.
 
-- Move "Done" items to `brain/reviews/YYYY-WNN.md` (ISO week number).
+- Move "Done" items to a review file (e.g., `agent_brain/reviews/YYYY-WNN.md`, creating the `agent_brain/reviews/` directory if it doesn't exist).
 - Clear the "Done" section on the board.
 - Review **Doing** — at most 2 items (WIP); consolidate or move extras to Next / Sprint Backlog.
 - Review "Inbox" — triage anything remaining.
@@ -59,8 +59,8 @@ Follow `BOARD.md` section order when walking the board: Doing → Next → Waiti
 
 ### 3b. Review ideas
 
-- Read `brain/ideas/_scratchpad.md` — any items worth promoting to their own file?
-- Scan idea files in `brain/ideas/`:
+- Read `agent_brain/ideas/_scratchpad.md` — any items worth promoting to their own file?
+- Scan idea files in `agent_brain/ideas/`:
   - `seed` ideas: still interesting? Promote to `developing` or archive.
   - `developing` ideas: any progress this week? Anything to add from the week's context?
   - `ready` ideas: should any be converted this week? (create ticket, start project, etc.)
@@ -77,8 +77,8 @@ Follow `BOARD.md` section order when walking the board: Doing → Next → Waiti
 If the user asks for a monthly or quarterly review:
 
 - Run `did` with the appropriate range (`did last quarter`, `did this month`).
-- Scan review files in `brain/reviews/` for the period.
-- Scan logs in `memory/logs/` for the period.
+- Scan review files in `agent_brain/reviews/` for the period (if the directory exists).
+- Scan logs in `logs/` for the period.
 - Group by project or theme.
 - Highlight: major deliverables, cross-team contributions, problems solved, skills developed.
 - Present in a format suitable for sharing with a manager.

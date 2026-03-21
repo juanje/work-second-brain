@@ -1,4 +1,4 @@
-# Work Second Brain
+# Work Agentic Buddy
 
 A persistent, file-based memory system for AI coding assistants. You do brain dumps throughout the day — tasks, decisions, ideas, context, random thoughts — and the AI agent captures, organizes, and maintains everything in Markdown files.
 
@@ -32,7 +32,6 @@ Talk to the agent naturally. It will:
 - **Capture decisions** → Project files or concept files, with reasoning
 - **Capture ideas** → Ideas directory, with a lifecycle (seed → developing → ready → converted)
 - **Capture lessons** → Concept files for future reference
-- **Capture requests** → Request files + board, with context about who asked and why
 - **Confirm what it captured** — always
 
 You don't need to think about where things go. The agent classifies and files them based on what you say. Over time, your workspace becomes a searchable, structured knowledge base of everything you've worked on, decided, and learned.
@@ -42,7 +41,7 @@ You don't need to think about where things go. The agent classifies and files th
 | Command | What it does |
 |---------|-------------|
 | `/standup` | Shows what was done, current priorities, blockers, inbox to triage |
-| `/next` | Shows the next task with full context from the issue tracker and brain |
+| `/next` | Shows the next task with full context from the issue tracker and agent brain |
 | `/reflect` | Processes the conversation into a structured daily log |
 | `/weekly` | Compiles the week's work, cleans the board, plans next week |
 | `/sync` | Quick board sync: cross-references board with the issue tracker |
@@ -75,26 +74,22 @@ A periodic deep maintenance that keeps the system healthy. Run it with `/mainten
 
 ```
 ├── AGENTS.md                    → Agent working memory. Loaded automatically.
-├── board/
+├── work/
 │   └── BOARD.md                 → Kanban board.
-├── identity/
-│   ├── USER.md                  → Your work profile and preferences.
-│   └── SOUL.md                  → Agent identity, values, and limits.
-├── skills/                      → Reusable procedures, loaded on demand.
-├── brain/
-│   ├── projects/                → Active project context and decisions.
-│   ├── concepts/                → Lessons learned, patterns, knowledge.
-│   ├── teams/                   → Team structure, who works on what.
-│   ├── requests/                → Cross-team requests.
-│   ├── reviews/                 → Weekly/sprint review archives.
-│   ├── ideas/                   → Ideas with lifecycle tracking.
-│   └── archive/                 → Files degraded by disuse.
-└── memory/
-    ├── logs/                    → Daily conversation logs.
-    └── archive/                 → Compacted old logs.
+├── logs/                        → Daily conversation logs.
+│   └── archive/                 → Compacted old logs.
+└── agent_brain/
+    ├── identity/
+    │   ├── USER.md              → Your work profile and preferences.
+    │   └── SOUL.md              → Agent identity, values, and limits.
+    ├── skills/                  → Reusable procedures, loaded on demand.
+    ├── projects/                → Active project context and decisions.
+    ├── concepts/                → Lessons learned, patterns, knowledge.
+    ├── ideas/                   → Ideas with lifecycle tracking.
+    └── archive/                 → Files degraded by disuse.
 ```
 
-The system starts nearly empty. Directories populate through use. The agent creates files as needed — you don't have to set up anything manually beyond the initial configuration.
+The system starts nearly empty. Directories populate through use. The agent creates files and new directories inside `agent_brain/` as needed — you don't have to set up anything manually beyond the initial configuration. For example, if you start tracking cross-team requests, a `requests/` directory will emerge. If you need team structure notes, a `teams/` directory will be created. The structure grows organically to match how you actually work.
 
 ## External tools (optional)
 
@@ -120,11 +115,11 @@ Slash commands are provided for Cursor (`.cursor/commands/`). For Claude Code, c
 
 ### Adding skills
 
-Skills are reusable procedures in `skills/`. Create a new `.md` file with a "When to use" trigger and a numbered "Procedure", then add it to the Skills section in `AGENTS.md`. The agent will pick it up on the next conversation.
+Skills are reusable procedures in `agent_brain/skills/`. Create a new `.md` file with a "When to use" trigger and a numbered "Procedure", then add it to the Skills section in `AGENTS.md`. The agent will pick it up on the next conversation.
 
 ### Adding brain directories
 
-If you need a new category of knowledge, create a directory under `brain/` and add it to the "Where to find things" section in `AGENTS.md` with a description of when the agent should look there.
+The agent creates new directories inside `agent_brain/` as needed based on use. You can also create them manually — just add the new directory to the "Where to find things" section in `AGENTS.md` with a description of when the agent should look there.
 
 ### Adapting to different tools
 

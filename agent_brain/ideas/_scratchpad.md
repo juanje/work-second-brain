@@ -7,7 +7,7 @@ created: YYYY-MM-DD
 # Ideas Scratchpad
 
 Quick capture for ideas that are just a sentence or two. When an idea deserves
-iteration, promote it to its own file in `brain/ideas/` and remove it from here.
+iteration, promote it to its own file in `agent_brain/ideas/` and remove it from here.
 
 ---
 

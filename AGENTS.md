@@ -1,4 +1,4 @@
-# Work Second Brain — Not yet configured
+# Work Agentic Buddy — Not yet configured
 
 This system needs initial setup before it can help you.
 
