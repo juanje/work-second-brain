@@ -1,6 +1,6 @@
 # Work Agentic Buddy
 
-A persistent, file-based memory system for AI coding assistants. You do brain dumps throughout the day — tasks, decisions, ideas, context, random thoughts — and the AI agent captures, organizes, and maintains everything in Markdown files.
+A work companion that remembers everything you tell it. A self-organizing work memory built on Markdown files and any AI agent that can read them. Brain dump tasks, decisions, ideas, and context — the agent captures, organizes, and helps you stay on top of your work.
 
 ## Table of contents
 
