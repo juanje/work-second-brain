@@ -66,13 +66,89 @@ Follow `BOARD.md` section order when walking the board: Doing → Next → Waiti
   - `ready` ideas: should any be converted this week? (create ticket, start project, etc.)
 - Present a brief ideas summary to the user alongside the board review.
 
-### 4. Prepare next week
+### 4. Calibrate promotions (Hebbian)
+
+Review the "Active context" section of AGENTS.md against actual usage this
+week. The goal is to check whether daily promotions held up over time.
+
+1. For each file linked in Active context, check its `access_count` and
+   `last_accessed` metadata.
+2. **Reinforce:** files accessed repeatedly across different days this week →
+   keep in Active context. Consider enriching the description if its role has
+   become clearer.
+3. **Weaken:** files promoted during a daily consolidation but barely touched
+   since → remove from Active context. The initial connection didn't hold —
+   it was a one-day spike, not sustained relevance.
+4. **New promotions:** recalculate scores across the full week (same formula
+   as daily: `access_count × recency_factor`). Any file that scores high
+   across the week but isn't in Active context yet → add it.
+5. The Board link is always present — don't remove it.
+
+Present the changes: "Promoted: [X], Removed: [Y], Kept: [Z]."
+
+### 5. Calibrate skills and rules
+
+Review skills and rules that were created during daily consolidation this week:
+
+- **Used and referenced** this week → keep as-is, or adjust if usage revealed
+  issues with triggers or procedure.
+- **Not used at all** since creation → flag. The trigger description may be
+  too vague, or the skill may have been premature. Don't remove yet — give
+  it another week.
+
+### 6. Generalize
+
+Look across the week's specific concepts, skills, and brain files for patterns
+that can be abstracted into general knowledge.
+
+1. Scan `agent_brain/concepts/` and `agent_brain/projects/` for files that
+   share a common theme or pattern.
+2. If 2-3+ specific items (A, B, C) are related and share an underlying
+   principle:
+   - Create a general concept file (AA) that captures the shared pattern.
+   - In AA, explain the general principle and link to the specific instances:
+     ```markdown
+     ## Specific instances
+     - [A](path/to/A.md) — how A relates to this pattern
+     - [B](path/to/B.md) — how B relates to this pattern
+     - [C](path/to/C.md) — how C relates to this pattern
+     ```
+   - In each specific file (A, B, C), add a back-reference:
+     ```markdown
+     > General pattern: [AA](path/to/AA.md) — the broader principle
+     ```
+   - If AA is heavily relevant right now, add it to Active context in
+     AGENTS.md. The general version is more broadly useful than any
+     specific instance.
+3. Do the same for skills: if skills X and Y follow a similar procedure for
+   different domains, consider a general skill that covers both.
+4. Present generalizations to the user for approval before creating.
+
+Don't force generalizations. If nothing connects naturally across the week,
+skip this step. Generalization emerges from accumulated data, not from a
+single week.
+
+### 7. Light pruning (flag only)
+
+Scan brain files for staleness signals:
+- Files not accessed in >21 days → flag them in a note to the user. Don't
+  move them — that's the monthly cycle's job.
+- If any flagged files are in Active context → remove them from Active
+  context (they shouldn't be there if untouched for 3 weeks).
+
+### 8. Prepare next week
 
 - Ask: "What should be your top priorities next week?"
 - Suggest items from the board based on age, context, and patterns.
 - Move agreed priorities to "Sprint Backlog" or "Next Actions" as appropriate (Next Actions stays short).
 
-### 5. Broader review mode
+### 9. Git commit
+
+```bash
+git add AGENTS.md agent_brain/ logs/ work/ && git commit -m "weekly: YYYY-WNN" 2>/dev/null || true
+```
+
+### 10. Broader review mode
 
 If the user asks for a monthly or quarterly review:
 
