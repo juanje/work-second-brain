@@ -39,6 +39,8 @@ Talk to the agent naturally. It will:
 
 You don't need to think about where things go. The agent classifies and files them based on what you say. Over time, your workspace becomes a searchable, structured knowledge base of everything you've worked on, decided, and learned.
 
+When you start a new conversation, the agent automatically checks for today's log (or yesterday's) to pick up context from previous sessions — no need to repeat yourself.
+
 ## Structured workflows
 
 | Command | What it does |
