@@ -1,0 +1,240 @@
+---
+last_accessed: YYYY-MM-DD
+access_count: 0
+created: YYYY-MM-DD
+---
+
+# Skill: Monthly maintenance
+
+## When to use
+
+Triggered by the user via the `/monthly` command, typically at the end of the
+month or when the system feels cluttered. This is the deepest maintenance
+cycle — focused on forgetting what's abandoned, deep generalization across the
+full knowledge base, and structural cleanup.
+
+Lighter maintenance happens at other levels:
+- `/daily` — concept creation, associations, initial promotion, skill/rule
+  creation from mature observations.
+- `/weekly` — Hebbian calibration of promotions, generalization across the
+  week, light pruning flags.
+
+This cycle handles what only makes sense at monthly scale.
+
+## Phases
+
+Execute in order. Each phase is independent: if one fails, log the error and
+continue with the next.
+
+---
+
+### Phase 1: Log compaction
+
+**Goal:** Keep `logs/` manageable while preserving valuable context.
+
+1. List files in `logs/` older than 30 days (exclude maintenance logs).
+2. For each old log:
+   - Check if its key content (decisions, lessons) has been extracted to
+     `agent_brain/`.
+   - If fully extracted: move to `logs/archive/`.
+   - If it contains unextracted knowledge: extract it to the appropriate
+     `agent_brain/` location first, then archive the log.
+3. Never delete logs outright — always archive.
+4. Record what was compacted.
+
+---
+
+### Phase 2: Full pruning (archive)
+
+**Goal:** Move truly abandoned information out of the active space. This is
+the "forgetting" that the weekly cycle only flags.
+
+1. Scan all files in `agent_brain/` subdirectories (excluding `identity/`,
+   `skills/`, and `archive/`).
+2. Read their metadata (`last_accessed`, `access_count`).
+3. If a file hasn't been accessed in >30 days AND has fewer than 5 total
+   accesses:
+   - Move it to `agent_brain/archive/`.
+   - If it was linked in Active context of AGENTS.md, remove the link.
+   - If other files reference it, update cross-references to point to the
+     archive location.
+   - Record the move.
+4. If a file hasn't been accessed in >30 days BUT has >5 accesses:
+   - Don't move it. Flag it as a review candidate in the maintenance log.
+     It was important once — the user should decide.
+
+**Exception:** Never move or prune files in `agent_brain/identity/`,
+`agent_brain/skills/`, or `work/`. Those require human decision.
+
+---
+
+### Phase 3: Prune unused skills and rules
+
+**Goal:** Remove skills and rules that were created but never confirmed by
+use. The weekly cycle flags unused skills; the monthly cycle acts on them.
+
+1. Review all skills in `agent_brain/skills/` (excluding system skills:
+   `process-conversation.md`, `daily-consolidation.md`, `weekly-review.md`,
+   `monthly-maintenance.md`).
+2. For each skill: check if it was referenced or triggered in the last
+   month's logs.
+   - Referenced and used → keep.
+   - Not referenced but less than 1 month old → keep (still new).
+   - Not referenced and older than 1 month → flag for removal. Present
+     to the user.
+   - If approved for removal: move the skill file to `agent_brain/archive/`,
+     remove it from the Skills section of AGENTS.md.
+3. Review rules in AGENTS.md: any that were added in the last months but
+   seem to conflict with observed behavior or are consistently ignored?
+   - Flag for review. Present to the user.
+
+---
+
+### Phase 4: Deep generalization
+
+**Goal:** Find patterns across the full knowledge base that haven't been
+caught by weekly generalization. This operates at a broader scale — looking
+across weeks and months of accumulated knowledge.
+
+1. Scan all concept files in `agent_brain/concepts/`.
+2. Look for clusters of related concepts that share an underlying principle
+   but haven't been linked or generalized yet.
+3. If 2-3+ specific concepts (A, B, C) share a pattern:
+   - Create a general concept file (AA) that captures the shared principle.
+   - In AA, link to the specific instances with explanations:
+     ```markdown
+     ## Specific instances
+     - [A](path/to/A.md) — how A relates
+     - [B](path/to/B.md) — how B relates
+     - [C](path/to/C.md) — how C relates
+     ```
+   - In each specific file, add a back-reference:
+     ```markdown
+     > General pattern: [AA](path/to/AA.md) — the broader principle
+     ```
+   - If the general concept is broadly useful, add it to Active context.
+4. Do the same for skills: if multiple skills follow a similar pattern for
+   different domains, consider creating a general skill that covers the
+   common procedure, referencing the specific skills for domain details.
+5. Check existing generalizations: are they still accurate? Do they need
+   updating based on new specific instances?
+6. Present all generalizations to the user for approval before creating.
+
+---
+
+### Phase 5: Ideas review
+
+**Goal:** Keep `agent_brain/ideas/` healthy.
+
+1. Read `agent_brain/ideas/_scratchpad.md`.
+   - Any item older than 7 days? Flag it: promote to its own file or remove.
+2. Scan all idea files in `agent_brain/ideas/` (excluding `_scratchpad.md`).
+3. For each idea:
+   - `seed` not accessed in >14 days → flag as stale.
+   - `developing` not accessed in >21 days → flag as stuck.
+   - `ready` not accessed in >7 days → flag for action.
+   - `converted` or `archived` older than 30 days → move to
+     `agent_brain/archive/`.
+4. Record findings.
+
+---
+
+### Phase 6: Contradiction detection
+
+**Goal:** Maintain coherence in the knowledge base.
+
+1. Scan concept and project files for contradictions: information in one
+   file that conflicts with information in another.
+2. Check recent logs (last month) for information that contradicts existing
+   brain files.
+3. For each contradiction:
+   - Clear contradiction + reliable new info → update the old file.
+   - Ambiguous → add a note:
+     ```
+     > ⚠️ CONTRADICTION (YYYY-MM-DD): [description]. Pending human review.
+     ```
+4. Record contradictions found and how they were resolved.
+
+---
+
+### Phase 7: Structure review
+
+**Goal:** Ensure `agent_brain/` structure matches how the system is actually
+used. The directory structure should emerge from use, not from upfront design.
+
+1. Review structure candidates in `agent_brain/observations.md`.
+2. Scan files in `agent_brain/` — are there files that don't fit their
+   current directory?
+3. If a new category has accumulated (3+ files of a similar type in an
+   ill-fitting directory):
+   - Propose a dedicated directory.
+   - If approved: create it, move the files, update "Where to find things"
+     in AGENTS.md.
+4. Check existing directories: any empty or with only 1 file after >30 days?
+   - The directory may be premature. Flag it.
+5. Record structural changes and proposals.
+
+---
+
+### Phase 8: Clear resolved observations
+
+**Goal:** Keep the observation journal clean.
+
+1. Read `agent_brain/observations.md`.
+2. Move all entries in the "Resolved" section that are older than 30 days
+   out of the file (they've served their purpose).
+3. Check remaining unresolved observations: any older than 60 days with
+   only 1 occurrence? They're probably noise — remove them.
+
+---
+
+### Finalize
+
+1. Create `logs/monthly_YYYY-MM-DD.md`:
+
+```markdown
+# Monthly maintenance — YYYY-MM-DD
+
+## Compaction
+- Logs archived: [list or "none"]
+- Knowledge extracted: [list or "none"]
+
+## Pruning
+- Files archived: [list or "none"]
+- Review candidates (high access, old): [list or "none"]
+
+## Skills and rules pruned
+- Skills removed: [list or "none"]
+- Skills flagged: [list or "none"]
+- Rules flagged: [list or "none"]
+
+## Generalization
+- General concepts created: [list or "none"]
+- General skills created: [list or "none"]
+- Existing generalizations updated: [list or "none"]
+
+## Ideas
+- Scratchpad items flagged: [list or "none"]
+- Stale/stuck ideas flagged: [list or "none"]
+- Ideas archived: [list or "none"]
+
+## Contradictions
+- Detected: [list or "none"]
+- Resolved: [list or "none"]
+- Pending human review: [list or "none"]
+
+## Structure
+- Directories created: [list or "none"]
+- Files moved: [list or "none"]
+- Proposals pending approval: [list or "none"]
+
+## Observations cleaned
+- Resolved entries cleared: [count]
+- Stale entries removed: [count]
+```
+
+2. Git commit:
+
+```bash
+git add AGENTS.md agent_brain/ logs/ work/ && git commit -m "monthly: YYYY-MM-DD" 2>/dev/null || true
+```
