@@ -10,7 +10,7 @@ A work companion that remembers everything you tell it. A self-organizing work m
 - [What it does](#what-it-does)
 - [Structured workflows](#structured-workflows)
 - [The board](#the-board)
-- [Maintenance cycle](#maintenance-cycle)
+- [Learning cycles](#learning-cycles)
 - [Structure](#structure)
 - [External tools (optional)](#external-tools-optional)
 - [Compatibility](#compatibility)
@@ -47,10 +47,11 @@ When you start a new conversation, the agent automatically checks for today's lo
 |---------|-------------|
 | `/standup` | Shows what was done, current priorities, blockers, inbox to triage |
 | `/next` | Shows the next task with full context from the issue tracker and agent brain |
-| `/reflect` | Processes the conversation into a structured daily log |
-| `/weekly` | Compiles the week's work, cleans the board, plans next week |
+| `/reflect` | Processes the conversation into a structured daily log and detects learning observations |
+| `/daily` | End-of-day consolidation: creates concepts, forms associations, acts on mature observations |
+| `/weekly` | Weekly review + Hebbian calibration of promotions + generalization across concepts |
 | `/sync` | Quick board sync: cross-references board with the issue tracker |
-| `/maintenance` | Deep maintenance: compaction, pruning, promotion, board hygiene |
+| `/monthly` | Deep maintenance: pruning, deep generalization, contradiction detection, structure review |
 | `/refresh` | Re-reads AGENTS.md — useful when the agent loses context in long conversations |
 
 These commands are available as slash commands in Cursor and Claude Code. For other agents, trigger them by asking directly (e.g., "run a standup", "do a weekly review").
@@ -63,17 +64,20 @@ A Kanban-style task board ordered by actionability:
 
 Items flow from capture to completion. The agent enforces WIP limits — if you have too much in Doing, it will tell you. During weekly reviews, Done items are archived into review files for future reference (quarterly reviews, manager conversations).
 
-## Maintenance cycle
+## Learning cycles
 
-A periodic deep maintenance that keeps the system healthy. Run it with `/maintenance` at the end of the day or weekly.
+The system learns through four temporal levels, modeled on how biological memory works — from short-term encoding to long-term consolidation and forgetting:
 
-1. **Log compaction** — archives old logs after extracting knowledge
-2. **Pruning** — moves unused brain files to archive (Hebbian degradation)
-3. **Promotion** — updates the agent's active context based on usage patterns (Hebbian promotion)
-4. **Board hygiene** — flags stale blockers, untriaged inbox, WIP violations
-5. **Ideas review** — flags stale ideas, reminds about mature ones ready for action
-6. **Skill review** — detects repeated patterns in logs and suggests new skills
-7. **Contradiction detection** — finds and flags inconsistencies in the knowledge base
+| Level | Command | What it does | When to run |
+|-------|---------|-------------|-------------|
+| **Encoding** | `/reflect` | Logs the conversation, detects patterns and observations | After each conversation |
+| **Consolidation** | `/daily` | Creates concepts, forms associations, creates skills/rules from mature observations, first promotions | End of day |
+| **Calibration** | `/weekly` | Calibrates promotions (reinforce or weaken), generalizes across concepts, light pruning flags | End of week |
+| **Forgetting** | `/monthly` | Archives abandoned files, prunes unused skills, deep generalization, contradiction and structure review | Monthly |
+
+Each level builds on the previous one's output. `/reflect` detects raw observations. `/daily` acts on them — creating knowledge and connections. `/weekly` checks whether those connections held up over time or were just noise. `/monthly` archives what's truly forgotten and looks for deep patterns across the full knowledge base.
+
+Specific concepts that share an underlying pattern get abstracted into general concepts — the general version handles future unknown cases, while the specific instances remain for detailed reference.
 
 ## Structure
 
@@ -87,6 +91,7 @@ A periodic deep maintenance that keeps the system healthy. Run it with `/mainten
     ├── identity/
     │   ├── USER.md              → Your work profile and preferences.
     │   └── SOUL.md              → Agent identity, values, and limits.
+    ├── observations.md          → Learning journal: raw observations from /reflect.
     ├── skills/                  → Reusable procedures, loaded on demand.
     ├── projects/                → Active project context and decisions.
     ├── concepts/                → Lessons learned, patterns, knowledge.
@@ -169,11 +174,7 @@ Over time, these simple rules produce a knowledge base that reflects how you act
 
 This system runs on top of general-purpose AI coding agents, not a dedicated application. That means some things that would ideally be automatic require manual intervention.
 
-**Conversation processing is manual.** You need to run `/reflect` periodically to extract decisions, lessons, and context from the conversation into structured logs. There is no automatic trigger — most editors don't fire session-end events, and users typically start new conversations rather than closing existing ones. If you forget to reflect, the conversation context is lost when it leaves the agent's context window.
-
-**Maintenance is manual.** The maintenance cycle (`/maintenance`) must be run explicitly. There is no scheduler or cron integration built in. In Claude Code, the `/loop` command is session-scoped (max 3 days) and the desktop scheduler only works in Claude Desktop, not the CLI. For now, running `/maintenance` weekly or when things feel stale works well enough.
-
-**No deep generalization.** The maintenance cycle processes files mechanically — compacting logs, pruning stale files, updating promotions. It does not replay or reflect on what happened during the day to extract higher-level patterns or generalizations. The learning that happens is incremental (via `/reflect`) rather than consolidative.
+**All learning cycles are manual.** You need to remember to run `/reflect`, `/daily`, `/weekly`, and `/monthly` at the appropriate times. There are no automatic triggers — most editors don't fire session-end events, and users typically start new conversations rather than closing existing ones. If you forget to reflect, conversation context is lost when it leaves the agent's context window.
 
 **Cursor-first.** Slash commands work out of the box in Cursor. For Claude Code, commands need to be copied to `.claude/commands/`. For other agents, workflows must be triggered by asking the agent directly (e.g., "run a standup"). The core system (AGENTS.md + skills + file structure) works everywhere, but the UX is best in Cursor.
 

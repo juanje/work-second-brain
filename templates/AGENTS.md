@@ -78,6 +78,7 @@ Update `last_accessed` and increment `access_count` when you read or modify a fi
 - [agent_brain/projects/](agent_brain/projects/) — Read when the user discusses a specific project and you need history, context, or past decisions.
 - [agent_brain/concepts/](agent_brain/concepts/) — Read when you need generalized knowledge: lessons learned, known patterns, recurring errors.
 - [agent_brain/ideas/](agent_brain/ideas/) — Read when the user asks about ideas they've captured, wants to iterate on an idea, or during reviews. Contains ideas in various stages (seed → developing → ready → converted → archived). `_scratchpad.md` holds quick one-liners.
+- [Observations journal](agent_brain/observations.md) — Read during `/daily` and `/weekly` to review accumulated observations. Written to by `/reflect`. Don't read preemptively during normal conversation.
 
 <!-- New directories inside agent_brain/ are created as needed. When you create one, add it here with a description of when to look there. -->
 
@@ -87,7 +88,9 @@ Update `last_accessed` and increment `access_count` when you read or modify a fi
 
 - [run-standup](agent_brain/skills/run-standup.md) — Generates a standup: what was done (via `did`), current Doing, Next Actions, Sprint Backlog, blockers, inbox pending triage. Use when the user says "standup", "what's on my plate", "what should I work on", or starts a session with no specific request.
 - [capture-item](agent_brain/skills/capture-item.md) — Detailed classification procedure for complex captures: items needing multiple destinations, batch processing from meeting dumps, or unclear classification. For simple captures (one task → Inbox), the Core Behavior above is enough.
-- [weekly-review](agent_brain/skills/weekly-review.md) — Compiles the week's work (via `did` + logs + board), reviews and cleans the board, prepares next week's focus. Use when the user says "weekly review", "what did I do this week", or for broader reviews ("this quarter", "for my manager").
+- [weekly-review](agent_brain/skills/weekly-review.md) — Weekly review + Hebbian calibration (reinforce/weaken promotions based on actual use) + generalization across related concepts + light pruning flags. Use when the user says "weekly review", "what did I do this week", or for broader reviews ("this quarter", "for my manager").
+- [daily-consolidation](agent_brain/skills/daily-consolidation.md) — End-of-day "sleep": consolidates the day's conversations, creates new concepts, forms associations between brain files, creates skills/rules from mature observations (2+ occurrences), updates Active context promotions. Use when the user says "daily", "end of day", or runs `/daily`.
+- [monthly-maintenance](agent_brain/skills/monthly-maintenance.md) — Deep monthly cycle: archives stale files, prunes unused skills/rules, deep generalization across the full knowledge base, contradiction detection, structure review, observation journal cleanup. Use when the user says "monthly", "deep maintenance", or runs `/monthly`.
 - [next-task](agent_brain/skills/next-task.md) — Shows the next task to work on with full context, plus the rest of the queue. Use when the user says "next", "what's next", "what should I work on now", or runs `/next`.
 - [sync-board](agent_brain/skills/sync-board.md) — Lightweight mid-day sync: cross-references board with the issue tracker, detects resolved/unblocked items, refreshes Active context. Use when the user says "sync", "refresh", "update board status", or runs `/sync`.
 

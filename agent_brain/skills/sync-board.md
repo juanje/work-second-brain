@@ -12,8 +12,8 @@ Lightweight mid-day sync to keep the board and Active context current.
 Use when the user says "sync", "refresh", "update board status", or runs `/sync`.
 Can be run multiple times a day — designed to be fast (seconds, not minutes).
 
-NOT a replacement for `sleep-maintenance`, which does deep end-of-day work
-(compaction, pruning, skill review, contradiction detection).
+NOT a replacement for `/daily` (end-of-day consolidation and learning) or
+`/monthly` (deep pruning, generalization, contradiction detection).
 
 ## Procedure
 
