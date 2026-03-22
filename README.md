@@ -2,6 +2,8 @@
 
 A work companion that remembers everything you tell it. A self-organizing work memory built on Markdown files and any AI agent that can read them. Brain dump tasks, decisions, ideas, and context — the agent captures, organizes, and helps you stay on top of your work.
 
+> **Early stage project.** This system is fully functional and in active daily use, but still evolving. Rules, skills, and project structure may change as better patterns are discovered. Your local copy is yours — upstream changes won't affect it. If you adopt this system, expect to adapt it to your workflow rather than follow a stable API.
+
 ## Table of contents
 
 - [Getting started](#getting-started)
@@ -14,6 +16,7 @@ A work companion that remembers everything you tell it. A self-organizing work m
 - [Compatibility](#compatibility)
 - [Customization](#customization)
 - [Design principles: why this works](#design-principles-why-this-works)
+- [Known limitations](#known-limitations)
 - [License](#license)
 
 ## Getting started
@@ -159,6 +162,18 @@ Complex systems theory shows that sophisticated behavior can emerge from simple 
 - **When in doubt, capture.** A rough note is better than a lost thought.
 
 Over time, these simple rules produce a knowledge base that reflects how you actually work — not how you planned to work.
+
+## Known limitations
+
+This system runs on top of general-purpose AI coding agents, not a dedicated application. That means some things that would ideally be automatic require manual intervention.
+
+**Conversation processing is manual.** You need to run `/reflect` periodically to extract decisions, lessons, and context from the conversation into structured logs. There is no automatic trigger — most editors don't fire session-end events, and users typically start new conversations rather than closing existing ones. If you forget to reflect, the conversation context is lost when it leaves the agent's context window.
+
+**Maintenance is manual.** The maintenance cycle (`/maintenance`) must be run explicitly. There is no scheduler or cron integration built in. In Claude Code, the `/loop` command is session-scoped (max 3 days) and the desktop scheduler only works in Claude Desktop, not the CLI. For now, running `/maintenance` weekly or when things feel stale works well enough.
+
+**No deep generalization.** The maintenance cycle processes files mechanically — compacting logs, pruning stale files, updating promotions. It does not replay or reflect on what happened during the day to extract higher-level patterns or generalizations. The learning that happens is incremental (via `/reflect`) rather than consolidative.
+
+**Cursor-first.** Slash commands work out of the box in Cursor. For Claude Code, commands need to be copied to `.claude/commands/`. For other agents, workflows must be triggered by asking the agent directly (e.g., "run a standup"). The core system (AGENTS.md + skills + file structure) works everywhere, but the UX is best in Cursor.
 
 ## License
 
