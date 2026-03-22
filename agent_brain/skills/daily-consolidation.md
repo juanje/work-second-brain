@@ -14,6 +14,23 @@ consolidates the day's work and learns from it.
 
 ## Procedure
 
+---
+
+### Step 0: Reflect first
+
+Before consolidating, always process the current conversation:
+
+1. Read `agent_brain/skills/process-conversation.md` and execute it.
+   This captures the current conversation into today's log and detects
+   observations — even if the user already ran `/reflect` earlier.
+   The reflect skill appends without duplicating, so running it twice
+   is safe.
+
+This ensures no conversation context is lost, even if the user forgot
+to `/reflect` during the day.
+
+---
+
 The daily consolidation has two parts: first consolidate (summarize and
 organize the day), then learn (create knowledge, form connections, act on
 mature observations).
@@ -24,9 +41,10 @@ mature observations).
 
 #### 1. Replay the day
 
-Read `logs/YYYY-MM-DD.md` (today's date). The log may contain multiple
-`/reflect` passes from different conversations throughout the day. Read it
-as a whole — understand the day's arc, not isolated conversations.
+Read `logs/YYYY-MM-DD.md` (today's date). The log now contains the reflect
+pass from Step 0, plus any earlier `/reflect` passes from other
+conversations today. Read it as a whole — understand the day's arc, not
+isolated conversations.
 
 If no log exists for today, check yesterday's. If neither exists, note it
 and skip to Part 2 (the observation journal may still have actionable items).

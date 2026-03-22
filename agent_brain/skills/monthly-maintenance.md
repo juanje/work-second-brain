@@ -23,8 +23,23 @@ This cycle handles what only makes sense at monthly scale.
 
 ## Phases
 
-Execute in order. Each phase is independent: if one fails, log the error and
-continue with the next.
+### Phase 0: Check prerequisite cycles
+
+Before deep maintenance, ensure lower-level cycles are current:
+
+1. **Reflect:** Run the reflect procedure first (read and execute
+   `agent_brain/skills/process-conversation.md`).
+2. **Weekly:** Check if `/weekly` was run in the last 10 days. Look for
+   recent review files in `agent_brain/reviews/`. If not, inform the
+   user: "Weekly review hasn't been run recently. Running a weekly cycle
+   first to ensure the monthly has complete data." Then execute the
+   weekly review procedure (which will cascade into daily/reflect as
+   needed).
+
+---
+
+Execute remaining phases in order. Each phase is independent: if one
+fails, log the error and continue with the next.
 
 ---
 
@@ -68,24 +83,42 @@ the "forgetting" that the weekly cycle only flags.
 
 ---
 
-### Phase 3: Prune unused skills and rules
+### Phase 3: Prune unused learned skills and rules
 
-**Goal:** Remove skills and rules that were created but never confirmed by
-use. The weekly cycle flags unused skills; the monthly cycle acts on them.
+**Goal:** Review skills and rules that were created by the agent through use,
+and weaken or archive those that haven't been confirmed by continued use.
 
-1. Review all skills in `agent_brain/skills/` (excluding system skills:
-   `process-conversation.md`, `daily-consolidation.md`, `weekly-review.md`,
-   `monthly-maintenance.md`).
-2. For each skill: check if it was referenced or triggered in the last
-   month's logs.
+Skills fall into two categories:
+
+**Core skills** (never pruned — they are the system's architecture):
+`process-conversation.md`, `daily-consolidation.md`, `weekly-review.md`,
+`monthly-maintenance.md`, `run-standup.md`, `capture-item.md`,
+`next-task.md`, `sync-board.md`.
+
+**Learned skills** (subject to Hebbian pruning — everything else):
+Skills created by the agent during `/daily` consolidation based on
+observed patterns. These earned their place through repeated use, and
+they keep it the same way.
+
+**Procedure:**
+
+1. Review all learned skills in `agent_brain/skills/` (skip core skills).
+2. For each learned skill, check if it was referenced or triggered in the
+   last month's logs.
    - Referenced and used → keep.
    - Not referenced but less than 1 month old → keep (still new).
-   - Not referenced and older than 1 month → flag for removal. Present
-     to the user.
-   - If approved for removal: move the skill file to `agent_brain/archive/`,
-     remove it from the Skills section of AGENTS.md.
-3. Review rules in AGENTS.md: any that were added in the last months but
-   seem to conflict with observed behavior or are consistently ignored?
+   - Not referenced and 1-3 months old → **archive**. Move to
+     `agent_brain/archive/`, remove from Skills section of AGENTS.md.
+     Ask the user: "This skill hasn't been used in a month. Is it
+     seasonal (needed at specific times, like sprint planning or
+     quarterly releases), or should I archive it?"
+     If the user says seasonal → keep it, add a `seasonal: true` note
+     in its frontmatter.
+   - Archived and not retrieved in >3 months → can be deleted. Git
+     history preserves it if ever needed again.
+3. Review rules in AGENTS.md: any added by the agent (not original rules)
+   that seem to conflict with observed behavior or are consistently
+   ignored?
    - Flag for review. Present to the user.
 
 ---

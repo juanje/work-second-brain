@@ -13,6 +13,21 @@ or for broader reviews ("what have I done this quarter", "review for my manager"
 
 ## Procedure
 
+### 0. Check prerequisite cycles
+
+Before starting the weekly review:
+
+1. **Reflect:** Run the reflect procedure first (read and execute
+   `agent_brain/skills/process-conversation.md`) to capture the current
+   conversation.
+2. **Daily:** Check if `/daily` was run in the last 2 days. Look for a
+   "Day summary" section in recent logs. If `/daily` hasn't been run
+   recently, inform the user: "Daily consolidation hasn't been run in
+   the last couple of days. I'll run a quick consolidation now to make
+   sure this review has complete data." Then execute the daily
+   consolidation procedure (skip Step 0 since reflect was already done
+   above).
+
 ### 1. Gather data
 
 - Run `did this week` to get objective activity data.
@@ -86,15 +101,16 @@ week. The goal is to check whether daily promotions held up over time.
 
 Present the changes: "Promoted: [X], Removed: [Y], Kept: [Z]."
 
-### 5. Calibrate skills and rules
+### 5. Calibrate learned skills and rules
 
-Review skills and rules that were created during daily consolidation this week:
+Review **learned** skills and rules (created by the agent during `/daily`,
+not core system skills) that were created or modified this week:
 
 - **Used and referenced** this week → keep as-is, or adjust if usage revealed
   issues with triggers or procedure.
 - **Not used at all** since creation → flag. The trigger description may be
   too vague, or the skill may have been premature. Don't remove yet — give
-  it another week.
+  it another week. The monthly cycle handles archiving after longer disuse.
 
 ### 6. Generalize
 
