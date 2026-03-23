@@ -144,6 +144,11 @@ Don't force generalizations. If nothing connects naturally across the week,
 skip this step. Generalization emerges from accumulated data, not from a
 single week.
 
+5. **Structural clustering** (applies to all brain structures, not just
+   concepts): scan directories for files sharing a prefix or referencing
+   each other heavily. If 3+ files form a cluster → propose consolidation
+   into a subdirectory with an `index.md` hub. See Core Behavior rule 6.
+
 ### 7. Light pruning (flag only)
 
 Scan brain files for staleness signals:

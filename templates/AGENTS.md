@@ -33,6 +33,8 @@ Don't mention this check unless the user asks — just use the context naturally
 
 5. **Ask about prioritization** if something seems urgent or unclear.
 
+6. **Group, don't duplicate.** Before creating a new file, check if the topic already has a file or directory in the target location. Add to the existing structure (new section, sub-file) rather than creating parallel files with prefixes. If a topic accumulates 3+ related files, consolidate into a subdirectory with an `index.md` hub. This applies to all brain structures: projects, concepts, teams, etc.
+
 ### Board item format
 
 ```

@@ -151,7 +151,10 @@ across weeks and months of accumulated knowledge.
    common procedure, referencing the specific skills for domain details.
 5. Check existing generalizations: are they still accurate? Do they need
    updating based on new specific instances?
-6. Present all generalizations to the user for approval before creating.
+6. Apply the same generalization logic to **all brain structures** — not
+   just concepts. Projects, teams, and any other directories can also
+   contain related files that share an underlying pattern.
+7. Present all generalizations to the user for approval before creating.
 
 ---
 
@@ -198,14 +201,22 @@ used. The directory structure should emerge from use, not from upfront design.
 1. Review structure candidates in `agent_brain/observations.md`.
 2. Scan files in `agent_brain/` — are there files that don't fit their
    current directory?
-3. If a new category has accumulated (3+ files of a similar type in an
+3. **Cluster detection** (applies to ALL directories — projects, concepts,
+   teams, etc.): scan for files sharing a common prefix or with heavy
+   mutual cross-references. If 3+ files form a cluster within the same
+   directory:
+   - Propose consolidation into a subdirectory with an `index.md` hub.
+   - If approved: create it, move files, update all cross-references
+     (AGENTS.md, reviews, team files, etc.), update "Where to find things."
+   - See Core Behavior rule 6.
+4. If a new category has accumulated (3+ files of a similar type in an
    ill-fitting directory):
    - Propose a dedicated directory.
    - If approved: create it, move the files, update "Where to find things"
      in AGENTS.md.
-4. Check existing directories: any empty or with only 1 file after >30 days?
+5. Check existing directories: any empty or with only 1 file after >30 days?
    - The directory may be premature. Flag it.
-5. Record structural changes and proposals.
+6. Record structural changes and proposals.
 
 ---
 
