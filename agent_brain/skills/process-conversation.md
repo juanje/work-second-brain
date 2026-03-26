@@ -87,10 +87,21 @@ noise? Only record genuine observations.
   procedures too specific to reuse.
 
 **Rule candidates — a behavioral correction or preference:**
-- The user corrected your behavior ("don't do X", "always do Y").
-- You made an assumption that turned out wrong.
-- A preference was expressed that should apply to all future conversations.
-- You violated a principle from SOUL.md and had to self-correct.
+
+Two paths depending on how the signal was detected:
+
+- **Explicit user correction** (the user directly told you to change behavior:
+  "don't do X", "always do Y", or pointed out a mistake): **fast-track**.
+  Propose the rule to the user immediately in this conversation. If approved,
+  add it to AGENTS.md Rules now and log it as resolved in the observation
+  journal. Don't wait for the 2+ threshold — a direct correction is a strong
+  signal.
+
+- **Inferred rule candidate** (you noticed a pattern: an assumption that
+  turned out wrong, a preference expressed indirectly, a SOUL.md principle
+  you violated and self-corrected): log it in the observation journal as
+  usual. The `/daily` cycle acts on it when seen 2+ times.
+
 - NOT a candidate: preferences already captured in USER.md, or one-off
   requests for this conversation only.
 
