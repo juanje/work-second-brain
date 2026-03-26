@@ -190,7 +190,7 @@ This system runs on top of general-purpose AI coding agents, not a dedicated app
 
 **All learning cycles are manual.** You need to remember to run `/reflect`, `/daily`, `/weekly`, and `/monthly` at the appropriate times. There are no automatic triggers — most editors don't fire session-end events, and users typically start new conversations rather than closing existing ones. If you forget to reflect, conversation context is lost when it leaves the agent's context window.
 
-**Cursor-first.** Slash commands work out of the box in Cursor. For Claude Code, commands need to be copied to `.claude/commands/`. For other agents, workflows must be triggered by asking the agent directly (e.g., "run a standup"). The core system (AGENTS.md + skills + file structure) works everywhere, but the UX is best in Cursor.
+**Cursor-first.** The system is developed and tested primarily in Cursor. Claude Code is fully functional via pre-created symlinks (`CLAUDE.md`, `.claude/commands/`), but some behavioral differences exist (see the project's production notes for details). For other agents, workflows must be triggered by asking directly (e.g., "run a standup"). The core system (AGENTS.md + skills + file structure) works everywhere.
 
 ## License
 
