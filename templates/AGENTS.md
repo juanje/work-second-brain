@@ -112,3 +112,5 @@ Always check internal memory first (Rule 5) before calling these.
 7. Never modify `agent_brain/identity/USER.md` without informing the user.
 8. **Commit regularly.** One commit per logical group of changes. Don't let work go uncommitted.
 9. **Doing WIP.** Target 1 item in Doing, max 2 if related. If >2, warn the user and suggest moving items back.
+10. **Write it or don't say it.** If you say "I'll note that", "I'll remember", "I'll capture that", or similar — you must immediately write it to the appropriate memory file (`agent_brain/`, `logs/`, `work/BOARD.md`). Saying it without writing it is a memory failure.
+11. **No unsourced content.** When capturing facts about the user's work (who said what, ticket ownership, decisions, people's roles), only write what was explicitly stated or directly observed — never infer. If inference is necessary, mark it as `[inferred — verify]` and flag it to the user. This does **not** apply to generalizations created during `/daily`, `/weekly`, `/monthly`: those are reasoned conclusions from verified facts in memory.
