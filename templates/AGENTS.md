@@ -92,7 +92,6 @@ Read the full skill file ONLY when the trigger matches. Don't read skills preemp
 - [capture-item](agent_brain/skills/capture-item.md) — Complex captures: multiple destinations, batch processing, unclear classification. For simple captures, Core Behavior above is enough.
 - [next-task](agent_brain/skills/next-task.md) — Next task with full context and queue. Use on `/next`, "next", "what should I work on now".
 - [sync-board](agent_brain/skills/sync-board.md) — Quick board sync with the issue tracker. Use on `/sync`, "sync", "update board status".
-- [import-brain](agent_brain/skills/import-brain.md) — Imports content from an old brain instance (WAB or older AB). Use on `/import <path>`, "import my old brain", "migrate from my old instance", or "bring in my old data".
 
 ## Getting work data
 
