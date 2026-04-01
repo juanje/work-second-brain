@@ -6,11 +6,13 @@ All generated content (board items, notes, brain files, logs) must be in English
 
 ## Session start
 
-At the start of a new conversation, check for recent context:
+Before doing anything else:
 
-1. If `logs/YYYY-MM-DD.md` exists (today) → read it for context from earlier conversations.
-2. If not, check yesterday's log → read it for recent context.
-3. If neither exists → proceed normally.
+1. Read `agent_brain/identity/SOUL.md` — this is who you are.
+2. Read `agent_brain/identity/USER.md` — this is who you're helping.
+3. If `logs/YYYY-MM-DD.md` exists (today) → read it for context from earlier conversations.
+4. If not, check yesterday's log → read it for recent context.
+5. If neither exists → proceed normally.
 
 Don't mention this check unless the user asks — just use the context naturally.
 
@@ -50,7 +52,7 @@ One task = one item (own checkbox). Link related items with **Related to:** on e
 
 ### File metadata
 
-Every file in `agent_brain/` or `logs/` must have:
+Every file in `agent_brain/` must have:
 
 ```yaml
 ---
@@ -60,7 +62,10 @@ created: YYYY-MM-DD
 ---
 ```
 
-Update `last_accessed` and increment `access_count` when you read or modify a file.
+Update `last_accessed` and increment `access_count` when you **read a file
+for its content** (consulting it for context, reference, or decisions). Do
+not increment when you open a file only to modify it — the read is a means
+to the write, not a consultation.
 
 ## Active context
 
@@ -109,13 +114,14 @@ Always check internal memory first (Rule 5) before calling these.
 
 1. All generated content in English.
 2. Don't read files preemptively — access on demand when a trigger matches.
-3. Update metadata (`last_accessed`, `access_count`) on every file you read or modify in `agent_brain/` or `logs/`.
+3. Update metadata (`last_accessed`, `access_count`) when you **consult** a file in `agent_brain/` — i.e., read it for its content, not just to edit it. This makes `access_count` a signal of how often a file is needed, which drives Hebbian promotions.
 4. Create directories with `mkdir -p` when needed.
 5. **Memory first.** Check board, logs, and brain files before querying external tools. Use memory directly for stable data (decisions, context). For volatile data (ticket statuses), verify externally and update if stale.
 6. Never delete from `agent_brain/` without moving to `agent_brain/archive/` first.
-7. Never modify `agent_brain/identity/USER.md` without informing the user.
+7. `USER.md` can be updated freely with observed facts. Mark inferences as `[inferred — verify]` and flag to the user.
 8. **Commit regularly.** One commit per logical group of changes. Don't let work go uncommitted.
 9. **Doing WIP.** Target 1 item in Doing, max 2 if related. If >2, warn the user and suggest moving items back.
 10. **Write it or don't say it.** If you say "I'll note that", "I'll remember", "I'll capture that", or similar — you must immediately write it to the appropriate memory file (`agent_brain/`, `logs/`, `work/BOARD.md`). Saying it without writing it is a memory failure.
 11. **No unsourced content.** When capturing facts about the user's work (who said what, ticket ownership, decisions, people's roles), only write what was explicitly stated or directly observed — never infer. If inference is necessary, mark it as `[inferred — verify]` and flag it to the user. This does **not** apply to generalizations created during `/daily`, `/weekly`, `/monthly`: those are reasoned conclusions from verified facts in memory.
 12. **Context is not a task.** When the user describes how something works — especially ongoing, organic processes — capture it as context, not as an action item. Only create tasks from explicit action statements. Describing a situation does not imply it needs managing.
+13. **Confirm scope before acting on ambiguous error reports.** If the user flags something as wrong without specifying what, ask before making any changes. Acting on the first plausible interpretation risks touching things that weren't meant.
