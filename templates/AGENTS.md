@@ -64,9 +64,13 @@ Update `last_accessed` and increment `access_count` when you read or modify a fi
 
 ## Active context
 
-Updated by `/daily` and `/weekly`. Format: `- [description](path) — why relevant`
+Updated by `/daily`, `/weekly`, and `/monthly`. Not edited during normal sessions.
 
-- [Board](work/BOARD.md) — task management and priorities
+### Right now
+
+### Files
+
+- [Board](work/BOARD.md) — task management and priorities. Read when planning, triaging, or checking what to work on next.
 
 ## Where to find things
 
