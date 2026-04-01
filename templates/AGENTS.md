@@ -52,7 +52,7 @@ One task = one item (own checkbox). Link related items with **Related to:** on e
 
 ### File metadata
 
-Every file in `agent_brain/` must have:
+Every file in `agent_brain/` must have (except `identity/SOUL.md` and `identity/USER.md` — always loaded at session start, not subject to scoring):
 
 ```yaml
 ---
@@ -114,7 +114,7 @@ Always check internal memory first (Rule 5) before calling these.
 
 1. All generated **repository** content in English; **chat replies** follow the user's language (`USER.md` → Preferences).
 2. Don't read files preemptively — access on demand when a trigger matches.
-3. Update metadata (`last_accessed`, `access_count`) when you **consult** a file in `agent_brain/` — i.e., read it for its content, not just to edit it. This makes `access_count` a signal of how often a file is needed, which drives Hebbian promotions.
+3. Update metadata (`last_accessed`, `access_count`) when you **consult** a file in `agent_brain/` — i.e., read it for its content, not just to edit it. This makes `access_count` a signal of how often a file is needed, which drives Hebbian promotions. **Exception:** `identity/SOUL.md` and `identity/USER.md` have no metadata — they're always loaded at session start, not subject to scoring. Other `identity/` files (e.g. `background.md`, `tools.md`) are on-demand and keep normal metadata.
 4. Create directories with `mkdir -p` when needed.
 5. **Memory first.** Check board, logs, and brain files before querying external tools. Use memory directly for stable data (decisions, context). For volatile data (ticket statuses), verify externally and update if stale.
 6. Never delete from `agent_brain/` without moving to `agent_brain/archive/` first.
