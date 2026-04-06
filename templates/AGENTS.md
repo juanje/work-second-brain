@@ -69,8 +69,6 @@ to the write, not a consultation.
 
 ## Active context
 
-Updated by `/daily`, `/weekly`, and `/monthly`. Not edited during normal sessions.
-
 ### Right now
 
 ### Files
@@ -80,11 +78,6 @@ Updated by `/daily`, `/weekly`, and `/monthly`. Not edited during normal session
 ## Where to find things
 
 - [Board](work/BOARD.md) — tasks, priorities, what to work on. **Section order:** Doing (WIP 1, max 2) → Next Actions (max 3–4) → Waiting → Sprint Backlog → Inbox → Parked → Done.
-- [User profile](agent_brain/identity/USER.md) — work context, preferences, communication style.
-- [Agent guidelines](agent_brain/identity/SOUL.md) — operating values, limits, interaction style.
-- [Projects](agent_brain/projects/) — project history, context, past decisions.
-- [Concepts](agent_brain/concepts/) — lessons learned, patterns, generalized knowledge.
-- [Ideas](agent_brain/ideas/) — ideas in various stages. `_scratchpad.md` for one-liners.
 - [Observations](agent_brain/observations.md) — learning journal. Written by `/reflect`, read by `/daily` and `/weekly`. Don't read during normal conversation.
 
 New directories inside `agent_brain/` are created as needed. Add them to this list.
@@ -93,10 +86,6 @@ New directories inside `agent_brain/` are created as needed. Add them to this li
 
 Read the full skill file ONLY when the trigger matches. Don't read skills preemptively.
 
-- [process-conversation](agent_brain/skills/process-conversation.md) — Logs the conversation and detects learning observations. Use on `/reflect`, "reflect", or "process this conversation".
-- [daily-consolidation](agent_brain/skills/daily-consolidation.md) — End-of-day consolidation: creates concepts, forms associations, creates skills/rules from mature observations, updates promotions. Use on `/daily`, "daily", or "end of day".
-- [weekly-review](agent_brain/skills/weekly-review.md) — Weekly review, board cleanup, Hebbian calibration of promotions, generalization across concepts. Use on `/weekly`, "weekly review", "what did I do this week", or broader reviews.
-- [monthly-maintenance](agent_brain/skills/monthly-maintenance.md) — Deep monthly cycle: pruning, generalization, contradictions, structure review. Use on `/monthly`, "monthly", or "deep maintenance".
 - [run-standup](agent_brain/skills/run-standup.md) — Standup with activity data, board state, blockers. Use on `/standup`, "standup", "what's on my plate", or session start with no specific request.
 - [capture-item](agent_brain/skills/capture-item.md) — Complex captures: multiple destinations, batch processing, unclear classification. For simple captures, Core Behavior above is enough.
 - [next-task](agent_brain/skills/next-task.md) — Next task with full context and queue. Use on `/next`, "next", "what should I work on now".

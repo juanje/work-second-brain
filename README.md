@@ -55,7 +55,7 @@ When you start a new conversation, the agent automatically checks for today's lo
 | `/monthly` | Deep maintenance: pruning, deep generalization, contradiction detection, structure review |
 | `/refresh` | Re-reads AGENTS.md — useful when the agent loses context in long conversations |
 
-These commands are available as slash commands in Cursor and Claude Code. For other agents, trigger them by asking directly (e.g., "run a standup", "do a weekly review").
+These commands are slash commands in Cursor and Claude Code. Maintenance commands (`/reflect`, `/daily`, `/weekly`, `/monthly`) inject their skill file directly and require slash command support. Other skills (standup, next, sync) are listed in `AGENTS.md` and respond to natural language triggers with any agent.
 
 ## The board
 
@@ -120,7 +120,7 @@ The system works with any AI agent that reads `AGENTS.md` from the workspace roo
 - **GitHub Copilot** — reads AGENTS.md
 - **Windsurf, Zed, Gemini CLI, RooCode** — reads AGENTS.md
 
-Slash commands are provided for Cursor (`.cursor/commands/`). Claude Code commands are pre-created as symlinks in `.claude/commands/` pointing to the Cursor originals — one source of truth, both agents supported. For other agents, trigger workflows by asking directly.
+Slash commands are provided for Cursor (`.cursor/commands/`). Claude Code commands are pre-created as symlinks in `.claude/commands/` pointing to the Cursor originals — one source of truth, both agents supported. Content-triggered skills (listed in the Skills section of `AGENTS.md`) work with any agent. Maintenance commands require slash command support.
 
 **Note:** Claude Code reads `CLAUDE.md`, not `AGENTS.md`. The included `CLAUDE.md` symlink ensures both files resolve to the same content. A `.cursorignore` file prevents Cursor from double-indexing the symlinked files.
 
@@ -224,7 +224,7 @@ This system runs on top of general-purpose AI coding agents, not a dedicated app
 
 **All learning cycles are manual.** You need to remember to run `/reflect`, `/daily`, `/weekly`, and `/monthly` at the appropriate times. There are no automatic triggers — most editors don't fire session-end events, and users typically start new conversations rather than closing existing ones. If you forget to reflect, conversation context is lost when it leaves the agent's context window.
 
-**Cursor-first.** The system is developed and tested primarily in Cursor. Claude Code is fully functional via pre-created symlinks (`CLAUDE.md`, `.claude/commands/`), but some behavioral differences exist (see the project's production notes for details). For other agents, workflows must be triggered by asking directly (e.g., "run a standup"). The core system (AGENTS.md + skills + file structure) works everywhere.
+**Cursor-first.** The system is developed and tested primarily in Cursor. Claude Code is fully functional via pre-created symlinks (`CLAUDE.md`, `.claude/commands/`), but some behavioral differences exist (see the project's production notes for details). The core system (AGENTS.md + file structure) works with any agent that reads `AGENTS.md`, but maintenance commands (`/reflect`, `/daily`, `/weekly`, `/monthly`) require slash command support.
 
 ## Acknowledgments
 
