@@ -227,17 +227,22 @@ This system runs on top of general-purpose AI coding agents, not a dedicated app
 **Partial workaround (Linux/macOS + Claude Code CLI):** The consolidation cycles (`/daily`, `/weekly`, `/monthly`) can be automated via cron since they don't require an active conversation — they work from the files in the repo. `/reflect` cannot be automated this way because it processes a specific conversation.
 
 ```cron
+# Common config
+PROJECT_DIR=/path/to/your/wab
+CLAUDE_BIN=/path/to/claude          # e.g. ~/.local/bin/claude
+CLAUDE_TOOLS="Bash(readonly=false),Read,Write,Edit,Glob,Grep"
+
 # Daily — every night at 23:50
-50 23 * * *   cd /path/to/your/wab && claude -p "/daily"   --allowedTools "Bash(readonly=false),Read,Write,Edit,Glob,Grep" >> logs/cron-daily.log 2>&1
+50 23 * * *   cd $PROJECT_DIR && $CLAUDE_BIN -p "/daily"   --allowedTools "$CLAUDE_TOOLS" >> logs/cron-daily.log 2>&1
 
 # Weekly — Sundays at 23:55 (after daily)
-55 23 * * 0   cd /path/to/your/wab && claude -p "/weekly"  --allowedTools "Bash(readonly=false),Read,Write,Edit,Glob,Grep" >> logs/cron-weekly.log 2>&1
+55 23 * * 0   cd $PROJECT_DIR && $CLAUDE_BIN -p "/weekly"  --allowedTools "$CLAUDE_TOOLS" >> logs/cron-weekly.log 2>&1
 
 # Monthly — 1st of each month at 00:01
-1  0  1 * *   cd /path/to/your/wab && claude -p "/monthly" --allowedTools "Bash(readonly=false),Read,Write,Edit,Glob,Grep" >> logs/cron-monthly.log 2>&1
+1  0  1 * *   cd $PROJECT_DIR && $CLAUDE_BIN -p "/monthly" --allowedTools "$CLAUDE_TOOLS" >> logs/cron-monthly.log 2>&1
 ```
 
-Replace `/path/to/your/wab` with your repo path and `claude` with the full path to the Claude Code CLI binary if it's not on the cron `PATH` (e.g. `~/.local/bin/claude`). Log files land in `logs/` alongside the daily conversation logs.
+Log files land in `logs/` alongside the daily conversation logs.
 
 **Cursor-first.** The system is developed and tested primarily in Cursor. Claude Code is fully functional via pre-created symlinks (`CLAUDE.md`, `.claude/commands/`), but some behavioral differences exist (see the project's production notes for details). The core system (AGENTS.md + file structure) works with any agent that reads `AGENTS.md`, but maintenance commands (`/reflect`, `/daily`, `/weekly`, `/monthly`) require slash command support.
 
