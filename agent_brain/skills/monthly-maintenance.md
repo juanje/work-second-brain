@@ -100,8 +100,7 @@ Skills fall into two categories:
 
 **Core skills** (never pruned — they are the system's architecture):
 `process-conversation.md`, `daily-consolidation.md`, `weekly-review.md`,
-`monthly-maintenance.md`, `run-standup.md`, `capture-item.md`,
-`next-task.md`, `sync-board.md`.
+`monthly-maintenance.md`.
 
 **Learned skills** (subject to Hebbian pruning — everything else):
 Skills created by the agent during `/daily` consolidation based on
@@ -218,12 +217,11 @@ used. The directory structure should emerge from use, not from upfront design.
 2. Scan files in `agent_brain/` — are there files that don't fit their
    current directory?
 3. **Cluster detection** (applies to ALL directories — projects, concepts,
-   teams, etc.): scan for files sharing a common prefix or with heavy
-   mutual cross-references. If 3+ files form a cluster within the same
-   directory:
+   etc.): scan for files sharing a common prefix or with heavy mutual
+   cross-references. If 3+ files form a cluster within the same directory:
    - Create the subdirectory with an `index.md` hub; move the files; update
-     all cross-references (AGENTS.md, reviews, team files, etc.) and "Where
-     to find things." Log what was moved and why.
+     all cross-references (AGENTS.md, other brain files, etc.) and "Where to
+     find things." Log what was moved and why.
    - See Core Behavior rule 6.
 4. If a new category has accumulated (3+ files of a similar type in an
    ill-fitting directory):
@@ -231,7 +229,10 @@ used. The directory structure should emerge from use, not from upfront design.
      things" in AGENTS.md. Log the change.
 5. Check existing directories: any empty or with only 1 file after >30 days?
    - The directory may be premature. Flag it.
-6. Record structural changes and proposals.
+6. **Index coverage:** check directories with 3+ files and no `index.md` —
+   flag and propose creation. Indexes enable progressive disclosure: the
+   agent reads the map before diving in. See Rule 2.
+7. Record structural changes and proposals.
 
 ---
 
@@ -241,7 +242,7 @@ Review `agent_brain/identity/` files:
 
 1. Check `USER.md` for stale facts, redundancy, or excessive growth.
    Update observed facts from the month's logs. Remove outdated information.
-2. If extensions exist (`background.md`, `tools.md`, etc.), verify links
+2. If extensions exist (`background.md`, `health.md`, etc.), verify links
    from `USER.md` are accurate and load conditions still make sense.
 3. Compact where possible — identity files should be reference material,
    not accumulated history.

@@ -36,28 +36,19 @@ Before starting the weekly review:
 
 ### 1. Gather data
 
-- Run `did this week` to get objective activity data.
-- Run `jira-pending summary` to get current ticket status overview.
-- Run `jira-pending sprint` to see sprint ticket states.
 - Read logs from `logs/` for the current week.
-- Read `user/BOARD.md`.
+- Read `user/` to understand current state of the user's workspace.
 
 ### 2. Present the weekly summary
 
-**Activity summary** (from `did`):
-- Key commits, bugs resolved, reviews, issue tracker updates.
-- Group by project or theme if possible.
-
 **Completed this week:**
-- Items from "Done" on the board.
-- Cross-reference with `did` output for things done but not on the board.
+- Items completed or resolved, based on logs and `user/` content.
 
 **Still in progress:**
-- Items in "Doing". On track or at risk?
+- Ongoing items. On track or at risk?
 
 **Waiting/Blocked:**
-- Current blockers and their age.
-- Any resolved this week?
+- Anything the user is waiting on.
 
 **Decisions and context** (from logs):
 - Key decisions made and their reasoning.
@@ -66,17 +57,13 @@ Before starting the weekly review:
 **Unplanned work:**
 - Things that came up during the week that weren't planned.
 
-### 3. Clean the board
+### 3. Review user workspace
 
-Follow `BOARD.md` section order when walking the board: Doing → Next → Waiting → Sprint Backlog → Inbox → Parked → Done.
-
-- Move "Done" items to a review file (e.g., `agent_brain/reviews/YYYY-WNN.md`, creating the `agent_brain/reviews/` directory if it doesn't exist).
-- Clear the "Done" section on the board.
-- Review **Doing** — at most 2 items (WIP); consolidate or move extras to Next / Sprint Backlog.
-- Review "Inbox" — triage anything remaining.
-- Review "Sprint Backlog" — still relevant for the next sprint? Roll unfinished items forward or drop.
-- Review "Next Actions" — still relevant? Anything to add? Keep at 3–4 items max.
-- Review "Waiting" — any stale items to escalate?
+Walk through `user/` content:
+- Any completed items that can be archived or removed?
+- Any stale items that need attention?
+- Is the structure still serving the user well, or does it need adjustment?
+- Any items that should be prioritized for next week?
 
 ### 3b. Review ideas
 
@@ -84,8 +71,8 @@ Follow `BOARD.md` section order when walking the board: Doing → Next → Waiti
 - Scan idea files in `agent_brain/ideas/`:
   - `seed` ideas: still interesting? Promote to `developing` or archive.
   - `developing` ideas: any progress this week? Anything to add from the week's context?
-  - `ready` ideas: should any be converted this week? (create ticket, start project, etc.)
-- Present a brief ideas summary to the user alongside the board review.
+  - `ready` ideas: should any be converted this week? (create project, start task, etc.)
+- Present a brief ideas summary to the user alongside the workspace review.
 
 ### 3c. Link hygiene (weekly pass)
 
@@ -107,35 +94,42 @@ should exist.
 
 ### 4. Calibrate promotions (Hebbian)
 
-Review the "Active context" section of AGENTS.md against actual usage this
-week. The goal is to check whether daily promotions held up over time.
+Review visibility levels across the full knowledge base. The weekly cycle
+looks at the whole gradient, not just Active context. Promotion and demotion
+are gradual — one level at a time (see daily-consolidation Step 7 for the
+level table).
 
-1. For each file linked in Active context, check its `access_count` and
-   `last_accessed` metadata.
-2. **Reinforce:** files accessed repeatedly across different days this week →
-   keep in Active context. Update the hot data and read trigger if the
-   file's role has become clearer during the week.
-3. **Weaken:** files promoted during a daily consolidation but barely touched
-   since → remove from Active context. The initial connection didn't hold —
-   it was a one-day spike, not sustained relevance.
-4. **New promotions:** scan brain files for any that were heavily used this
-   week but aren't in Active context yet → add them.
-5. The Board link is always present — don't remove it.
+1. **Active context (level 4):** for each file, check `access_count` growth
+   this week.
+   - Grew across multiple days → **reinforce** (keep, enrich description).
+   - Didn't grow → **demote one level**: move to "Where to find things"
+     (level 3) if the file still has periodic relevance, or back to its
+     directory index (level 1-2) if the spike is clearly over.
+2. **"Where to find things" (level 3):** check entries that were added
+   beyond the base set (user workspace, projects, concepts, ideas, journal,
+   observations are base). Any added entry whose underlying files haven't
+   been accessed this week → demote back to directory index (level 1-2).
+3. **Directory indexes (level 1-2):** scan `index.md` files for entries
+   whose underlying file hasn't been accessed in >21 days → flag for
+   potential demotion within the index. Don't act automatically — flag.
+4. **New promotions:** scan files accessed repeatedly across different days
+   this week. Promote **one level up** from current position, not directly
+   to Active context. Only files already at level 3 that continue to be
+   accessed in most sessions graduate to level 4.
+5. **Missing indexes:** if a promoted file has no index pathway (standalone,
+   no parent `index.md`) → flag the missing index as a structure candidate.
 
-Each file entry should have **hot data** (key fact useful without opening
-the file) and a **read trigger** (when the agent should open it).
+Also update the **Right now** subsection with current state. See the daily
+skill Step 7 for format and full guidance on both subsections.
 
-Also update the **Right now** subsection with current state (situation,
-next actions, blockers, constraints). See the daily skill Step 7 for format
-and full guidance on both subsections.
-
-Log the changes: "Promoted: [X], Removed: [Y], Kept: [Z]."
+Present changes across all levels: "Level 4: kept [X], demoted [Y].
+Level 3: added [A], removed [B]. Level 1-2: enriched [C], flagged [D]."
 
 ### 4b. Identity file check
 
 If `agent_brain/identity/USER.md` has grown significantly (rough threshold:
 80+ lines of content), consider splitting detailed sections into separate
-files under `agent_brain/identity/` (e.g., `background.md`, `tools.md`).
+files under `agent_brain/identity/` (e.g., `background.md`, `health.md`).
 Keep `USER.md` lean — identity, current context, and preferences. Each
 extension should have explicit load conditions at the top:
 `Load when discussing [topic]`. Link from `USER.md` with:
@@ -147,21 +141,21 @@ added (new projects, changes in routine, people mentioned, context shifts).
 **Episodic entries:** For time-bounded situations (illness, injury, travel,
 temporary care load), collapse the accumulated day-by-day history to a
 single summary line once the episode is clearly resolved or stable. Format:
-`[Topic] (dates): [one-sentence outcome]. Detail in logs.`
-The day-by-day detail lives in `logs/` (or project notes) — `USER.md` only
-needs the current state and a pointer. Don't wait for the file to grow
-large; collapse when the episode closes.
+`[Topic] (dates): [one-sentence outcome]. Detail in journal.`
+The day-by-day detail lives in the journal entries — `USER.md` only needs
+the current state and a pointer. Don't wait for the file to grow large;
+collapse when the episode closes.
 
 **Extension file candidates (people, domains):** When a person or topic
 appears repeatedly across conversations and requires structured background
 context beyond a one-liner, consider creating an extension file under
-`agent_brain/identity/` (e.g., `background.md`, `health.md`, `tools.md`,
+`agent_brain/identity/` (e.g., `background.md`, `health.md`, `family.md`,
 `work.md`). The criterion is not file size — it's whether there is enough
 *stable, structured reference material* that an agent would genuinely need
 when the topic appears. Three questions:
 1. Is there a clear load trigger? ("when discussing X in depth")
 2. Is the content reference material (stable facts, dynamics, history) —
-   not episodic history that belongs in the logs?
+   not episodic history that belongs in the journal?
 3. Does it appear in multiple conversations, making the file worth
    maintaining?
 
@@ -234,25 +228,27 @@ Scan brain files for staleness signals:
 
 ### 8. Prepare next week
 
-- Review the board and recent logs.
+- Review current `user/` content and recent logs.
 - Write a brief priorities summary to the weekly log: top 3-5 items for
-  next week based on urgency, dependencies, and open threads. Move clear
-  priorities to "Sprint Backlog" or "Next Actions" as appropriate. No
-  interaction needed — the summary is there for the user to read.
+  next week based on urgency, dependencies, and open threads. No interaction
+  needed — the summary is there for the user to read.
 
-### 9. Git commit
+### 9. Write weekly summary to journal
+
+Write a summary of the week to `user/journal/weekly/YYYY-WNN.md` (create the file). Include: what was completed, key decisions, metrics if available (tickets resolved, MRs), and themes. This is a user artifact for future reference — not a log, not agent memory.
+
+### 10. Git commit
 
 ```bash
 git add AGENTS.md agent_brain/ logs/ user/ && git commit -m "weekly: YYYY-WNN" 2>/dev/null || true
 ```
 
-### 10. Broader review mode
+### 11. Broader review mode
 
 If the user asks for a monthly or quarterly review:
 
-- Run `did` with the appropriate range (`did last quarter`, `did this month`).
-- Scan review files in `agent_brain/reviews/` for the period (if the directory exists).
+- Scan journal files in `user/journal/` for the period (weekly, monthly as needed).
 - Scan logs in `logs/` for the period.
 - Group by project or theme.
-- Highlight: major deliverables, cross-team contributions, problems solved, skills developed.
-- Present in a format suitable for sharing with a manager.
+- Highlight: major deliverables, contributions, problems solved, skills developed.
+- Present in a format suitable for sharing or personal reflection.

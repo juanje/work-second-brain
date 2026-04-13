@@ -68,13 +68,14 @@ or update it if one already exists:
 
 Keep it brief — this makes the weekly review's job easier.
 
-#### 3. Board snapshot
+#### 3. Review user workspace
 
-Read `user/BOARD.md`. Quick checks only:
-- Is Doing clean for tomorrow? Anything that should move to Done or back
-  to Next Actions?
-- Any items that need attention flagged during the day?
-- Don't do a full board hygiene pass — that's for `/weekly` and `/monthly`.
+If `user/` has content, do a quick check:
+- Any items that need attention or follow-up?
+- Any completed items that should be noted?
+- Don't do a full review — that's for `/weekly` and `/monthly`.
+
+If `user/` is empty, skip this step.
 
 ---
 
@@ -179,10 +180,10 @@ Active context has two subsections: **Right now** (ephemeral state) and
 **### Right now** — current state the agent should know at every session
 start, without opening any file. Volatile facts that change every few days:
 
-- Current situation (sprint phase, deadline week, on-call, travel)
+- Current situation (vacation, sick, deadline week, travel)
 - Most immediate next actions (1-3 items, with dates if known)
-- Blockers or waiting items affecting daily work
-- Constraints (meetings, PTO, reduced availability)
+- Health or personal context affecting daily activity
+- Constraints or blockers
 
 Keep it to 3-5 bullet points. This is the scratchpad of working memory —
 not a task list, not a log. Replace the full contents each time; don't
@@ -191,14 +192,35 @@ append.
 **### Files** — pointers to brain files worth keeping in the agent's
 peripheral awareness. Updated based on today's activity:
 
+Promotion and demotion are **gradual** — one level at a time, not jumps.
+The visibility levels are:
+
+| Level | Where | Signal to promote |
+|---|---|---|
+| 0 | File in subdirectory, basic one-liner in its `index.md` | default state |
+| 1 | Prominent in its `index.md` (richer description, moved higher) | used this week |
+| 2 | Parent directory's `index.md` highlights the subdir/project | used across weeks |
+| 3 | "Where to find things" gets a specific entry with trigger | sustained high use |
+| 4 | Active context "Files" | hot — needed in most sessions |
+
+Steps:
+
 1. Scan files in `agent_brain/` (excluding `identity/`, `skills/`, `archive/`).
-2. Read metadata (`access_count`, `last_accessed`) as the starting point —
-   frequently read and recently accessed files are the primary candidates.
-3. Adjust with judgment: a file accessed once today on an important topic
-   may deserve promotion; a frequently-touched housekeeping file may not.
-4. Keep 5-7 entries. Remove files no longer actively relevant; add newly
-   important ones.
-5. The Board link is always present — don't remove it.
+2. Read metadata (`access_count`, `last_accessed`). Identify files whose
+   access has grown since last `/daily`.
+3. For each growing file, **promote one level** — not to Active context
+   directly. A file accessed once today becomes more prominent in its
+   subdir index. A file accessed repeatedly across sessions over multiple
+   days earns a higher level. Only files at level 3 that continue to be
+   accessed in most sessions graduate to Active context (level 4).
+4. For each file in Active context whose `access_count` hasn't grown →
+   **demote one level** (to "Where to find things" or back to its index).
+   Don't remove from the system — just move it one step further from
+   working memory. Gradual cooling, not deletion.
+5. Skip files linked from `USER.md` as structural context (team, primary
+   project) — they're always accessible through identity, not subject to
+   Hebbian dynamics.
+6. Keep Active context "Files" at 5-7 entries.
 
 Each file entry has two layers — **hot data** inline and a **read trigger**:
 
@@ -208,7 +230,7 @@ Each file entry has two layers — **hot data** inline and a **read trigger**:
 ```
 
 Examples:
-- `[Board](user/BOARD.md) — task management and priorities. Read when planning, triaging, or checking what to work on next.`
+- `[Wedding](path) — July 10 2026. Read when wedding tasks come up.`
 - `[Project X](path) — blocked on API approval. Read when discussing project X or planning sprints.`
 
 Avoid: accumulated history, internal scores, operational detail that only
@@ -221,5 +243,5 @@ matters during maintenance.
 #### 8. Git commit
 
 ```bash
-git add AGENTS.md agent_brain/ logs/ user/BOARD.md && git commit -m "daily: YYYY-MM-DD" 2>/dev/null || true
+git add AGENTS.md agent_brain/ logs/ user/ && git commit -m "daily: YYYY-MM-DD" 2>/dev/null || true
 ```

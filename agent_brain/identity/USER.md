@@ -2,33 +2,15 @@
 
 ## About
 
-- **Name:** <!-- First name or however they prefer to be called -->
-- **Company:** <!-- Where you work -->
-- **What you do:** <!-- In your own words — may be more nuanced than a job title -->
+- **Name:**
+- **What you do:**
 
-<!-- Anything else you'd like to share: interests, how you like to work, what
-     matters to you. This section grows organically from conversation. -->
+This section grows organically from conversation — interests, how you like to work, what matters to you.
 
-## Professional context
+## Context
 
-- **Role:** <!-- e.g. Software engineer, Tech Lead, Product Manager -->
-- **Team:** <!-- Your team name -->
-- **Focus:** <!-- Your main technical areas -->
-- **Stack:** <!-- Key technologies you work with daily -->
-- **Current focus:** <!-- What you're working on right now -->
+What are you using this system for? Permanent facts about your situation go here — things that are always relevant regardless of what you're working on this week. The agent reads this at session start; anything here is always accessible without Hebbian promotion.
 
-## Project landscape
+## Preferences
 
-<!-- List your main repos/projects, grouped if needed.
-     Create agent_brain/projects/<project>.md for detailed context on each. -->
-
-## Work style
-
-<!-- How do you work? What patterns should the agent know about?
-     Examples: context-switching frequency, meeting load, review responsibilities,
-     preferred workflows, known time sinks. -->
-
-## Communication preferences
-
-<!-- How should the agent talk to you?
-     Examples: direct/verbose, language preferences, formatting. -->
+How do you like to work? How should the agent present information? Examples: direct/verbose, structured/conversational, language preferences, formatting, frequency of check-ins.

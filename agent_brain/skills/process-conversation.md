@@ -46,7 +46,7 @@ last_updated: YYYY-MM-DDTHH:MM
 - [Ideas discussed, whether filed or not]
 
 ## Context
-- [Meetings, conversations with colleagues, situational context]
+- [Meetings, conversations, situational context]
 
 ## Lessons
 - [Patterns discovered, errors and fixes, things learned]
@@ -60,8 +60,8 @@ Always update the `last_updated` timestamp in the frontmatter.
 ### 3. Verify captures
 
 Check that everything actionable from the conversation has been properly captured:
-- Tasks → `user/BOARD.md` (Inbox or appropriate section)
-- Concrete improvement ideas / tech debt → `user/BOARD.md` Parked
+- Action items, tasks → `user/` (appropriate file or structure)
+- Concrete improvement ideas → `user/` or `agent_brain/ideas/`
 - Unformed ideas / project concepts / draft proposals → `agent_brain/ideas/`
 - Decisions → `agent_brain/projects/` or `agent_brain/concepts/`
 - Lessons → `agent_brain/concepts/`
@@ -183,7 +183,6 @@ git add logs/ agent_brain/observations.md && git commit -m "reflect: YYYY-MM-DD"
 - **Be specific.** "Discussed CI/CD" is useless. "Decided to migrate from Jenkins to
   Tekton because of X" is useful.
 - **Focus on reasoning.** Decisions and their "why" are the most valuable content.
-  Activity tracking is handled by external tools.
 - **Don't inflate.** If the conversation was trivial, the log can be minimal.
 - **Think of future you.** The log is for someone without today's context who needs
   to understand when and why something was decided.

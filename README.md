@@ -2,7 +2,7 @@
 
 A work companion that remembers everything you tell it. A self-organizing work memory built on Markdown files and any AI agent that can read them. Brain dump tasks, decisions, ideas, and context — the agent captures, organizes, and helps you stay on top of your work.
 
-> **Early stage project.** This system is fully functional and in active daily use, but still evolving. Rules, skills, and project structure may change as better patterns are discovered. Your local copy is yours — upstream changes won't affect it. If you adopt this system, expect to adapt it to your workflow rather than follow a stable API.
+> **Deprecation notice.** This project is being superseded by [Agentic Buddy](https://github.com/juanje/agentic-buddy) — the generic version with domain packs. New work instances should start from Agentic Buddy and apply the **work pack** during `/setup`. This repo remains functional for existing users but will not receive new features. See the [migration guide](https://github.com/juanje/agentic-buddy#migrating-from-an-existing-instance) for how to import your existing data.
 
 ## Table of contents
 
@@ -85,7 +85,8 @@ Specific concepts that share an underlying pattern get abstracted into general c
 ```
 ├── AGENTS.md                    → Agent working memory. Loaded automatically.
 ├── user/
-│   └── BOARD.md                 → Kanban board.
+│   ├── BOARD.md                 → Kanban board.
+│   └── journal/                 → Temporal activity summaries (weekly, monthly, quarterly).
 ├── logs/                        → Daily conversation logs.
 │   └── archive/                 → Compacted old logs.
 └── agent_brain/
