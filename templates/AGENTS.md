@@ -73,7 +73,7 @@ to the write, not a consultation.
 
 ## Active context
 
-Updated by `/daily`, `/weekly`, and `/monthly`. Not edited during normal sessions.
+Updated by `/daily`, `/weekly`, and `/monthly`. Factual updates to Right now (changed dates, flipped statuses) are allowed mid-session when reality changes — confirm with the user before patching.
 
 ### Right now
 
@@ -133,5 +133,5 @@ Always check internal memory first (Rule 5) before calling these.
 11. **No unsourced content.** When capturing facts about the user's work (who said what, decisions, people's roles), only write what was explicitly stated or directly observed — never infer. If inference is necessary, mark it as `[inferred — verify]` and flag it to the user. This does **not** apply to generalizations created during `/daily`, `/weekly`, `/monthly`: those are reasoned conclusions from verified facts in memory.
 12. **Context is not a task. User tasks are not agent tasks.** Descriptions of situations or processes → context, not action items. User plans ("I need to review…", "I want to look at…") → capture as tasks for the user in `user/BOARD.md` or the relevant file. Don't execute, search for, or analyze them unless explicitly asked.
 13. **Logs and memory files are context, not changelogs.** Don't annotate corrections, edit history, or "was X, now Y" notes in `logs/`, `user/`, or `agent_brain/` files. If something was wrong, fix it cleanly. Track errors and their causes in `agent_brain/observations.md`.
-14. **Don't edit system-level structures during normal sessions** — AGENTS.md rules, active context, skill procedures, and identity files change through maintenance cycles or explicit user requests, not ad-hoc edits. Propose changes instead.
+14. **Don't edit system-level structures during normal sessions** — AGENTS.md rules, skill procedures, and identity files change through maintenance cycles or explicit user requests, not ad-hoc edits. Propose changes instead. **Exception:** factual updates to Active context → Right now (changed dates, flipped statuses, scheduling shifts) are allowed mid-session when reality changes — these aren't structural edits, they're reconciliation with reality. Confirm briefly with the user before patching.
 15. **Current date from system, not context.** Never derive "today's date" from content in AGENTS.md, logs, or user messages. Use the system-injected date or run `date +%Y-%m-%d`.
