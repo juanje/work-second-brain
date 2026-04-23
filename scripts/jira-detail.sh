@@ -23,31 +23,53 @@ fi
 
 ISSUE_KEY="${1:-}"
 if [[ -z "$ISSUE_KEY" ]]; then
-    echo "Usage: $(basename "$0") ISSUE-KEY [--comments-only] [--last N]"
+    echo "Usage: $(basename "$0") ISSUE-KEY [--comments-only] [--last N] [--no-children]"
     echo ""
     echo "Options:"
     echo "  --comments-only   Show only comments, skip description and metadata"
     echo "  --last N          Show last N comments (default: 5)"
+    echo "  --no-children     Skip listing Epic children (faster for large Epics)"
     exit 1
 fi
 
 COMMENTS_ONLY=false
 LAST_N=5
+NO_CHILDREN=false
 shift
 while [[ $# -gt 0 ]]; do
     case "$1" in
         --comments-only) COMMENTS_ONLY=true; shift ;;
         --last) LAST_N="$2"; shift 2 ;;
+        --no-children) NO_CHILDREN=true; shift ;;
         *) shift ;;
     esac
 done
 
-FIELDS="summary,status,priority,description,comment,labels,issuelinks,created,updated,assignee,reporter"
+FIELDS="summary,status,priority,description,comment,labels,issuelinks,created,updated,assignee,reporter,issuetype,parent"
 
 RESULT=$(curl -s -u "$JIRA_USER:$JIRA_TOKEN" \
     "$JIRA_URL/rest/api/3/issue/$ISSUE_KEY?fields=$FIELDS")
 
-echo "$RESULT" | COMMENTS_ONLY="$COMMENTS_ONLY" LAST_N="$LAST_N" python3 -c '
+# If this is an Epic and children are requested, fetch them
+CHILDREN=""
+IS_EPIC=$(echo "$RESULT" | python3 -c "
+import sys, json
+try:
+    d = json.load(sys.stdin)
+    t = d.get('fields', {}).get('issuetype', {}).get('name', '')
+    print('yes' if t == 'Epic' else 'no')
+except:
+    print('no')
+" 2>/dev/null)
+
+if [[ "$IS_EPIC" == "yes" && "$NO_CHILDREN" == "false" && "$COMMENTS_ONLY" == "false" ]]; then
+    CHILDREN=$(curl -s -u "$JIRA_USER:$JIRA_TOKEN" \
+        -X POST -H "Content-Type: application/json" \
+        -d "{\"jql\":\"parent = $ISSUE_KEY ORDER BY status ASC, priority DESC\",\"maxResults\":100,\"fields\":[\"summary\",\"status\",\"priority\",\"issuetype\",\"assignee\"]}" \
+        "$JIRA_URL/rest/api/3/search/jql")
+fi
+
+echo "$RESULT" | COMMENTS_ONLY="$COMMENTS_ONLY" LAST_N="$LAST_N" CHILDREN="$CHILDREN" python3 -c '
 import sys, json, os
 
 def adf_to_text(node):
@@ -90,6 +112,7 @@ def adf_to_text(node):
 
 comments_only = os.environ.get("COMMENTS_ONLY") == "true"
 last_n = int(os.environ.get("LAST_N", "5"))
+children_json = os.environ.get("CHILDREN", "")
 
 data = json.load(sys.stdin)
 
@@ -108,6 +131,7 @@ if not comments_only:
     summary = fields.get("summary", "?")
     status = fields.get("status", {}).get("name", "?")
     priority = fields.get("priority", {}).get("name", "?")
+    issue_type = fields.get("issuetype", {}).get("name", "?")
     labels = ", ".join(fields.get("labels", [])) or "-"
     assignee = (fields.get("assignee") or {}).get("displayName", "Unassigned")
     reporter = (fields.get("reporter") or {}).get("displayName", "?")
@@ -115,11 +139,19 @@ if not comments_only:
     updated = fields.get("updated", "?")[:10]
 
     print(sep)
-    print(f"{key}  {summary}")
+    print(f"{key}  [{issue_type}]  {summary}")
     print(sep)
     print(f"Status: {status}  |  Priority: {priority}  |  Labels: {labels}")
     print(f"Assignee: {assignee}  |  Reporter: {reporter}")
     print(f"Created: {created}  |  Updated: {updated}")
+
+    parent = fields.get("parent")
+    if parent:
+        p_key = parent.get("key", "?")
+        p_summary = parent.get("fields", {}).get("summary", "?")
+        p_status = parent.get("fields", {}).get("status", {}).get("name", "?")
+        p_type = parent.get("fields", {}).get("issuetype", {}).get("name", "?")
+        print(f"Parent: {p_key} [{p_type}, {p_status}] {p_summary}")
 
     links = fields.get("issuelinks", [])
     if links:
@@ -137,6 +169,30 @@ if not comments_only:
             other_summary = other.get("fields", {}).get("summary", "?")
             other_status = other.get("fields", {}).get("status", {}).get("name", "?")
             print(f"  {direction} {other_key} [{other_status}] {other_summary}")
+
+    # Epic children
+    if children_json:
+        try:
+            cdata = json.loads(children_json)
+            cissues = cdata.get("issues", [])
+            if cissues:
+                from collections import Counter
+                statuses = Counter(c["fields"]["status"]["name"] for c in cissues)
+                status_summary = ", ".join(f"{s}: {n}" for s, n in sorted(statuses.items(), key=lambda x: -x[1]))
+                print(f"\n{thin}")
+                print(f"Epic children ({len(cissues)} issues — {status_summary}):")
+                print(thin)
+                for c in cissues:
+                    cf = c["fields"]
+                    c_key = c["key"]
+                    c_type = cf.get("issuetype", {}).get("name", "?")
+                    c_status = cf.get("status", {}).get("name", "?")
+                    c_priority = cf.get("priority", {}).get("name", "?")
+                    c_assignee = (cf.get("assignee") or {}).get("displayName", "Unassigned")
+                    c_summary = cf.get("summary", "?")
+                    print(f"  {c_key:<16} {c_status:<15} {c_assignee:<20} {c_summary}")
+        except (json.JSONDecodeError, KeyError):
+            pass
 
     desc = fields.get("description")
     print(f"\n{thin}")

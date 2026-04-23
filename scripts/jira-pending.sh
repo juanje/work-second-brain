@@ -39,6 +39,67 @@ case "$ACTION" in
     blocked)
         JQL="assignee = currentUser() AND (status = Blocked OR labels = impediment) AND project = $PROJECT"
         ;;
+    epic)
+        EPIC_KEY="${2:-}"
+        if [[ -z "$EPIC_KEY" ]]; then
+            echo "Usage: $(basename "$0") epic EPIC-KEY"
+            echo ""
+            echo "Lists all children of the given Epic with status and assignee."
+            exit 1
+        fi
+        curl -s -u "$JIRA_USER:$JIRA_TOKEN" \
+            -X POST -H "Content-Type: application/json" \
+            -d "{\"jql\":\"parent = $EPIC_KEY ORDER BY status ASC, priority DESC\",\"maxResults\":100,\"fields\":[\"summary\",\"status\",\"priority\",\"issuetype\",\"assignee\"]}" \
+            "$JIRA_URL/rest/api/3/search/jql" \
+            | python3 -c "
+import sys, json
+from collections import Counter
+data = json.load(sys.stdin)
+issues = data.get('issues', [])
+if not issues:
+    print('No children found.')
+    sys.exit(0)
+statuses = Counter(i['fields']['status']['name'] for i in issues)
+status_line = ' | '.join(f'{s}: {n}' for s, n in sorted(statuses.items(), key=lambda x: -x[1]))
+print(f'{len(issues)} children — {status_line}')
+print('-' * 70)
+for issue in issues:
+    key = issue['key']
+    f = issue['fields']
+    itype = f.get('issuetype', {}).get('name', '?')
+    summary = f.get('summary', '')
+    status = f.get('status', {}).get('name', '?')
+    priority = f.get('priority', {}).get('name', '?')
+    assignee = (f.get('assignee') or {}).get('displayName', 'Unassigned')
+    print(f'{key:<16} {status:<15} {assignee:<20} {summary}')
+"
+        exit 0
+        ;;
+    epics)
+        curl -s -u "$JIRA_USER:$JIRA_TOKEN" \
+            -X POST -H "Content-Type: application/json" \
+            -d "{\"jql\":\"project = $PROJECT AND issuetype = Epic AND resolution = Unresolved ORDER BY priority DESC, updated DESC\",\"maxResults\":50,\"fields\":[\"summary\",\"status\",\"priority\",\"assignee\"]}" \
+            "$JIRA_URL/rest/api/3/search/jql" \
+            | python3 -c "
+import sys, json
+data = json.load(sys.stdin)
+issues = data.get('issues', [])
+if not issues:
+    print('No open Epics found.')
+    sys.exit(0)
+print(f'{len(issues)} open Epics')
+print('-' * 70)
+for issue in issues:
+    key = issue['key']
+    f = issue['fields']
+    summary = f.get('summary', '')
+    status = f.get('status', {}).get('name', '?')
+    priority = f.get('priority', {}).get('name', '?')
+    assignee = (f.get('assignee') or {}).get('displayName', 'Unassigned')
+    print(f'{key:<16} {status:<15} {priority:<10} {assignee:<20} {summary}')
+"
+        exit 0
+        ;;
     summary)
         curl -s -u "$JIRA_USER:$JIRA_TOKEN" \
             -X POST -H "Content-Type: application/json" \
@@ -59,7 +120,7 @@ print(f'{\"Total\":<20} {total}')
         exit 0
         ;;
     *)
-        echo "Usage: $(basename "$0") [assigned|sprint|new|updated|blocked|summary]"
+        echo "Usage: $(basename "$0") [assigned|sprint|new|updated|blocked|summary|epic EPIC-KEY|epics]"
         exit 1
         ;;
 esac
